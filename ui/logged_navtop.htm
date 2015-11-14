@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="navbar navbar-fixed-top navbar-inverse">
+        <div class="navbar-inner">        
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>
+            <a class="brand" href="home.php">Drawing Tasks System</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">       
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Opcje</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Zadania</a></li>
+                                <li class="dropdown"><a href="settings.php">Ustawienia konta</a></li>
+                                <li class="divider"></li>
+                                <li><a href="logout.php">Wyloguj</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <li class="brand "><?php echo $_SESSION['key'];?></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
