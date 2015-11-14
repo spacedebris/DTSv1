@@ -57,8 +57,10 @@ class dbfun
 		}
 	}
 //#############################################################################################################
-	public function forgotten_password($email, $randomString){
-		$encrypted = md5($randomString);
+	public function forgotten_password($email){
+		$length = 10;
+        $randomString = substr(str_shuffle(md5(time())),0,$length);
+        $encrypted = password_hash($randomString, PASSWORD_DEFAULT);
 
 		try
 		{
@@ -83,7 +85,7 @@ class dbfun
 	        	$headers = "From: kozlowskimarkamil@gmail.com\r\n";
 	        	$headers .= "Reply-To: kozlowskimarkamil@gmail.com\r\n";
 	                        
-	        	$headers .= "Content-Type: text/html; utf-8\r\n";
+	        	$headers .= "Content-Type: text/html; charset=utf-8\r\n";
 
 	        	$message = '<html><body>';
 	        	$message .= '<h1>Twoje hasło to:</h1><br/><br/>';
@@ -112,7 +114,7 @@ class dbfun
 	{
 		try
 		{
-			$hashedpassword = password_hash($_POST['password2'], PASSWORD_BCRYPT);
+			$hashedpassword = password_hash($_POST['password2'], PASSWORD_DEFAULT);
 
             $stmt= $this->db->prepare("SELECT email FROM users WHERE email = :email");
             $stmt->bindParam(':email', $email);

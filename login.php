@@ -21,7 +21,9 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
                 messages: {
                     email: { required: 'Musisz podać adres email', email: 'Musisz podać poprawny adres email' },
                     password: {required: 'Musisz podać hasło'}
-                }
+                },
+                errorElement: 'div',
+                errorLabelContainer: '.errorTxt'
             });
         });
     </script>
@@ -52,6 +54,8 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
                             </div>
                         </div>
                         <button type="submit" name="loginUser" class="btn btn-default">Zaloguj</button> <a href="register.php" class="btn btn-default"> Zarejestruj się </a>   <a href="forgotten_password.php" class="btn btn-default"> Odzyskaj hasło </a>
+                        <br><br>
+                        <div class="errorTxt"></div>
                     </form>
                     <?php 
                     } else {

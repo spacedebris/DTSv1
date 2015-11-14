@@ -1,4 +1,7 @@
-<?php include_once 'dbconfig.php'; ?>
+<?php 
+require('dbconfig.php');
+if( $dbfun->is_logged_in() ){ header('Location: home.php'); } 
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
@@ -34,12 +37,8 @@
                         <button type="submit" name="forgottenUser" class="btn btn-default">Nowe hasło</button> <a href="login.php" class="btn btn-default">Zaloguj</a>  <a href="register.php" class="btn btn-default">Zarejestruj</a>
                     </form>
                     <?php 
-                    } else {
-                        $email = $_POST['email'];
-                        $length = 10;
-                        $randomString = substr(str_shuffle(md5(time())),0,$length);
-                        
-                        $dbfun->forgotten_password($email, $randomString);
+                    } else {                     
+                        $dbfun->forgotten_password($_POST['email']);
                     }
                     ?>
                 </div>
