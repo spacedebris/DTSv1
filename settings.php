@@ -1,10 +1,7 @@
-<?php
-session_start();
-if (!isset($_SESSION['key'])) {
-header('Location: logout.php');
-include_once 'dbconfig.php';
-}?>
-
+<?php 
+require('dbconfig.php');
+if(!$dbfun->is_logged_in()){ header('Location: login.php'); } 
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
