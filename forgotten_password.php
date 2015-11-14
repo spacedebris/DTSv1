@@ -11,6 +11,21 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="js/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#forgotten_user-form').validate({
+                rules: {
+                    email: {required: true, email: true}
+                },
+                messages: {
+                    email: { required: 'Musisz podać adres email', email: 'Musisz podać poprawny adres email' }
+                },
+                errorElement: 'div',
+                errorLabelContainer: '.errorTxt'
+            });
+        });
+    </script>
     <style type="text/css">
         body { background: url(assets/bglight.png);}
         .hero-unit { background-color: #fff; }
@@ -27,14 +42,16 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
               <div class="panel-heading" style="text-align:center"><h2>Odzyskiwanie hasła</h2></div>
                 <div class="panel-body">
                     <?php if(!isset($_POST['forgottenUser'])){ ?>
-                    <form role="form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <form id="forgotten_user-form" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                         <div class="form-group">
                             <div class="input-group">
                               <span class="input-group-addon glyphicon glyphicon-envelope "></span>
-                              <input type="text" name="email" class="form-control" placeholder="Podaj swój adres email" required="required">
+                              <input type="text" name="email" class="form-control" placeholder="Podaj swój adres email">
                             </div>
                         </div>
                         <button type="submit" name="forgottenUser" class="btn btn-default">Nowe hasło</button> <a href="login.php" class="btn btn-default">Zaloguj</a>  <a href="register.php" class="btn btn-default">Zarejestruj</a>
+                        <br><br>
+                        <div class="errorTxt"></div>
                     </form>
                     <?php 
                     } else {                     
