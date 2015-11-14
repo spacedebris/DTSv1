@@ -1,7 +1,6 @@
-<?php
-session_start();
-ob_start();
-include_once 'dbconfig.php';
+<?php 
+require('dbconfig.php');
+if( $dbfun->is_logged_in() ){ header('Location: home.php'); } 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
@@ -56,12 +55,8 @@ include_once 'dbconfig.php';
                     </form>
                     <?php 
                     } else {
-                        $email = $_POST['email'];
-                        $password = $_POST['password'];
-                        $encrypted = md5($password);
-                        
-                        $dbfun->login($email, $password);
-                            
+                        $dbfun->login($_POST['email'], $_POST['password']);
+                        $dbfun = null;
                     }
                     ?>
                 </div>

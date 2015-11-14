@@ -1,4 +1,7 @@
-<?php include_once 'dbconfig.php'; ?>
+<?php 
+require('dbconfig.php');
+if( $dbfun->is_logged_in() ){ header('Location: home.php'); } 
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
@@ -25,7 +28,9 @@
                     email: {required: 'Musisz podać adres', email: 'Musisz podać poprawny adres'},
                     password1: {required: 'Musisz podać hasło', minlength: 'Hasło musi zawierać min 5 znaków'},
                     password2: {required: 'Musisz powtórzyć hasło', minlength: 'Hasło musi zawierać min 5 znaków', equalTo: 'Hasła muszą być identyczne'}
-                }
+                },
+                errorElement: 'div',
+                errorLabelContainer: '.errorTxt'
             });
         });
     </script>
@@ -65,12 +70,12 @@
                             </div>
                         </div>
                         <button type="submit" name="registerUser" class="btn btn-default">Zarejestruj</button> <a href="login.php" class="btn btn-default"> Zaloguj </a>  <a href="forgotten_password.php" class="btn btn-default"> Zapomniałeś hasło ?</a>
+                        <br><br>
+                        <div class="errorTxt"></div>
                     </form>
                     <?php 
                     } else {
-                        $email = $_POST['email'];
-                        $password = $_POST['password2'];
-                        $dbfun->register($email, $password);
+                        $dbfun->register($_POST['email']);
                         $dbfun = null;
                     }?>
                 </div>

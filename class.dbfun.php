@@ -1,5 +1,4 @@
 <?php
-header('Content-type: text/html; charset=utf-8');
 class dbfun
 {	
 
@@ -11,18 +10,15 @@ class dbfun
 //#############################################################################################################
 	public function login($email, $password)
 	{
-		$encrypted = md5($password);
+		$hashed = $this->get_user_hash($email);
 		try
 		{
-			$stmt = $this->db->prepare("SELECT email, password FROM users WHERE email= :email AND password= :password");
-			$stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $encrypted);
-            $stmt->execute();
-            $rows = $stmt->fetch(PDO::FETCH_NUM);
-            if($rows > 0) {
-                $_SESSION['key']= $email;
-                header("location: home.php");
-            }
+			if(password_verify($password,$hashed) == 1){
+				$_SESSION['loggedin'] = true;
+				$_SESSION['key'] = $email;
+				header("location: home.php");
+				return true;
+			}
             else {
                 echo "<div class='alert alert-danger' role='alert' style='text-align:center'>
                 <strong>Twoje świadczenia nie są poprawne, bądź nie jesteś zarejestrowany<br/></strong>
@@ -34,6 +30,30 @@ class dbfun
 		catch(PDOException $e)
 		{
 			echo $e->getMessage();
+		}
+	}
+//#############################################################################################################
+	public function logout(){
+		session_destroy();
+	}
+//#############################################################################################################
+	public function is_logged_in(){
+		if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+			return true;
+		}		
+	}
+//#############################################################################################################
+	private function get_user_hash($email){	
+
+		try {
+			$stmt = $this->db->prepare('SELECT password FROM users WHERE email = :email'); //add active
+			$stmt->execute(array('email' => $email));
+			
+			$row = $stmt->fetch();
+			return $row['password'];
+
+		} catch(PDOException $e) {
+		    echo '<p class="bg-danger">'.$e->getMessage().'</p>';
 		}
 	}
 //#############################################################################################################
@@ -88,13 +108,11 @@ class dbfun
 		}
 	}
 //#############################################################################################################
-	public function register($email, $password)
+	public function register($email)
 	{
 		try
 		{
-			$verify = md5(uniqid(mt_rand(), true));
-                        
-            $encrypted = md5($password);
+			$hashedpassword = password_hash($_POST['password2'], PASSWORD_BCRYPT);
 
             $stmt= $this->db->prepare("SELECT email FROM users WHERE email = :email");
             $stmt->bindParam(':email', $email);
@@ -108,12 +126,11 @@ class dbfun
             }
             else 
             {     
-            	$stmt = $this->db->prepare("INSERT INTO users (firstname, lastname, email, password, verification) VALUES (:firstname, :lastname, :email, :password, :verification)");
+            	$stmt = $this->db->prepare("INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)");
                 $stmt->bindParam(':firstname', $_POST['firstname']);
                 $stmt->bindParam(':lastname', $_POST['lastname']);
                 $stmt->bindParam(':email', $_POST['email']);
-                $stmt->bindParam(':password', $encrypted);
-                $stmt->bindParam(':verification', $verify);
+                $stmt->bindParam(':password', $hashedpassword);
 
                 if($stmt->execute())
                 {
@@ -124,12 +141,12 @@ class dbfun
             		$subject = 'Witaj w systemie DTS';
             		$headers = "From: kozlowskimarekamil@gmail.com\r\n";
                     $headers .= "Reply-To: kozlowskimarekamil@gmail.com\r\n";
-                    $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+                    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
                     $message = '<html><body>';
                     $message .= '<h3>Witaj w systemie DTS</h3><br/>Twoje dane do logowania to:<br/>Nazwa uzytkownika: ';
                     $message .= $email;
                     $message .='<br/>Haslo: ';
-                    $message .= $password;//+link do login.php
+                    $message .= $hashedpassword;//+link do login.php
                     $message .= '<br/><br/>Powodzenia!!';
                     $message .= '</body></html>';
                     mail($to, $subject, $message, $headers);

@@ -1,5 +1,7 @@
-<?php
-	
-	session_destroy();
-	header('Location: index.php');
+<?php require('dbconfig.php');
+
+$dbfun->logout(); 
+
+header('Location: index.php');
+exit;
 ?>
