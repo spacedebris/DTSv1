@@ -37,10 +37,11 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
     <body>
         <?php include_once("ui/unlogged_navtop.htm"); ?> <!--navtop-->
 
-        <div class="container hero-unit" id='container' class="col-md-4">
-            <div class="panel panel-default">
-              <div class="panel-heading" style="text-align:center"><h2>Odzyskiwanie hasła</h2></div>
-                <div class="panel-body">
+        <div class="container hero-unit">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                    <h2>Odzyskiwanie hasła</h2>
+                    <hr>
                     <?php if(!isset($_POST['forgottenUser'])){ ?>
                     <form id="forgotten_user-form" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                         <div class="form-group">

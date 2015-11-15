@@ -37,33 +37,36 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
 </head>
     <body>
         <?php include_once("ui/unlogged_navtop.htm"); ?> <!--navtop-->
-        <div class="container hero-unit" id='container' class="col-md-4">
-            <div class="panel panel-default">
-              <div class="panel-heading" style="text-align:center"><h2>Zaloguj się!</h2></div>
-                <div class="panel-body" style="text-align:left">
-                    <?php if(!isset($_POST['loginUser'])){ ?>
-                    <form id="login-form" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                        <div class="form-group">
-                            <div class="input-group">
-                              <input type="text" name="email" class="form-control focusedInput" placeholder="Email"> 
-                            </div>
+        <div class="container hero-unit">
+            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                <h2>Zaloguj się</h2>
+                <hr>
+                <?php 
+                if(!isset($_POST['loginUser']))
+                {?>
+                <form id="login-form" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" name="email" class="form-control focusedInput" placeholder="Email"> 
                         </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                              <input type="password" name="password" id="password" class="form-control" placeholder="Hasło">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Hasło">
                         </div>
-                        <button type="submit" name="loginUser" class="btn btn-default">Zaloguj</button> <a href="register.php" class="btn btn-default"> Zarejestruj się </a>   <a href="forgotten_password.php" class="btn btn-default"> Odzyskaj hasło </a>
-                        <br><br>
-                        <div class="errorTxt"></div>
-                    </form>
-                    <?php 
-                    } else {
-                        $dbfun->login($_POST['email'], $_POST['password']);
-                        $dbfun = null;
-                    }
-                    ?>
-                </div>
+                    </div>
+                    <button type="submit" name="loginUser" class="btn btn-default">Zaloguj</button> <a href="index.php" class="btn btn-default"> Zarejestruj się </a>   <a href="forgotten_password.php" class="btn btn-default"> Odzyskaj hasło </a>
+                    <br><br>
+                    <div class="errorTxt"></div>
+                </form>
+                <?php 
+                } 
+                else 
+                {
+                    $dbfun->login($_POST['email'], $_POST['password']);
+                    $dbfun = null;
+                }
+                ?>
             </div>
         </div>
         <?php include("ui/footer.htm"); ?><!--footer-->
