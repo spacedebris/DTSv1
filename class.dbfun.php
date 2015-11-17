@@ -21,9 +21,10 @@ class dbfun
 			}
             else {
                 echo "<div class='alert alert-danger' role='alert' style='text-align:center'>
-                <strong>Twoje świadczenia nie są poprawne, bądź nie jesteś zarejestrowany<br/></strong>
-                <a href='forgotten_password.php'><strong>Odzyskaj hasło</strong></a><br/><a href='login.php'>
-                <strong>Zaloguj jeszcze raz</strong></a></div>";
+	                <strong>Twoje świadczenia nie są poprawne, nie jesteś zarejestrowany, bądź konto nie jest aktywne.<br/></strong>
+	                <a href='forgotten_password.php'><strong>Odzyskaj hasło</strong></a><br/>
+	                <a href='login.php'><strong>Zaloguj jeszcze raz</strong></a><br/>
+	                <a href='index.php'><strong>Zarejestruj</strong></a></div>";
                 session_destroy();
             }
 		}
@@ -46,7 +47,7 @@ class dbfun
 	private function get_user_hash($email){	
 
 		try {
-			$stmt = $this->db->prepare('SELECT password FROM users WHERE email = :email'); //add active
+			$stmt = $this->db->prepare('SELECT password FROM users WHERE email = :email AND verification="Yes" '); //add active
 			$stmt->execute(array('email' => $email));
 			
 			$row = $stmt->fetch();
@@ -112,8 +113,7 @@ class dbfun
 //#############################################################################################################
 	public function register($email)
 	{
-		try
-		{
+		
 			$hashedpassword = password_hash($_POST['password2'], PASSWORD_DEFAULT);
 			$verification = md5(uniqid(rand(),true));
 
@@ -137,28 +137,20 @@ class dbfun
                 $stmt->bindParam(':verification', $verification);
 
                 if($stmt->execute())
-                {
-                    //echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Wiadomość została wysłana na adres podany w formularzu.</strong><br/>"; 
+                { 
             		$to = $email;
-            		$subject = 'Witaj w systemie DTS';
-            		$headers = "From: kozlowskimarekamil@gmail.com\r\n";
-                    $headers .= "Reply-To: kozlowskimarekamil@gmail.com\r\n";
-                    $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-                    $message = '<html><body>';
-                    $message .= "<h3>Witaj  ".$_POST['firstname']."</h3><br/>";
-                    $message .= "Dzięki za rejestrację.\n\n Musisz teraz aktywować konto przechodząc w poniższy link:\n\n ".DIR."activate.php?x=$email&y=$verification\n\n Powodzenia ! \n\n";
-                    $message .= '</body></html>';
-                    mail($to, $subject, $message, $headers);
+            		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+					$subject = "DTS -> Potwierdzenie rejestracji";
+					$body = "Dzięki za rejestrację w DTS.\n\n Aby aktywować konto, przejdź w poniższy adres:\n\n ".DIR."activate.php?x=$email&y=$verification\n\n Powodzenia ! \n\n";
+					$additionalheaders = "From: <".SITEEMAIL.">\r\n";
+					$additionalheaders .= "Reply-To: ".SITEEMAIL."";
+					mail($to, $subject, $body, $additionalheaders,$headers);
 
                     header('Location: index.php?action=joined');
                     exit;
                 }   
             } 			
-		}
-		catch(PDOException $e)
-		{
-			echo $e->getMessage();
-		}
+		
 	}
 //#############################################################################################################
 	public function changePassword($email, $password)

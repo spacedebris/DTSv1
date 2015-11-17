@@ -41,9 +41,7 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
         .navbar-fixed-bottom {background-color: #f5f5f5; }
         ..navbar .brand {align:center;}
     </style>
-
 </head>
-
     <body>
         <?php include_once("ui/unlogged_navtop.htm"); ?> <!--navtop-->
 
@@ -55,7 +53,7 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
                     <hr>
                     <?php
                     if(isset($_GET['action']) && $_GET['action'] == 'joined'){
-                        echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Rejestracja udana, wiadomość z linkiem aktywacyjnym wysłana na adres podany w formularzu.</strong><br/>";
+                        echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Rejestracja udana, wiadomość z linkiem aktywacyjnym wysłana na adres podany w formularzu.</strong><br/></div>";
                     }
                     if(!isset($_POST['registerUser'])){ 
                     ?>
