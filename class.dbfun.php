@@ -115,6 +115,7 @@ class dbfun
 		try
 		{
 			$hashedpassword = password_hash($_POST['password2'], PASSWORD_DEFAULT);
+			$verification = md5(uniqid(rand(),true));
 
             $stmt= $this->db->prepare("SELECT email FROM users WHERE email = :email");
             $stmt->bindParam(':email', $email);
@@ -122,36 +123,35 @@ class dbfun
             if($stmt->rowCount() > 0)
             {
                 echo "<div class='alert alert-danger' role='alert' style='text-align:center'><strong>Podany adres email już istnieje w bazie!</strong>
-                <a href='register.php'><strong>Zarejestruj się ponownie używając innego adresu email.</strong></a>
+                <a href='index.php'><strong>Zarejestruj się ponownie używając innego adresu email.</strong></a>
                 <strong>Zapomniałeś hasło ?</strong><a href='forgotten_password.php'><strong> Wygeneruj nowe hasło.</strong>
                 </div>";
             }
             else 
             {     
-            	$stmt = $this->db->prepare("INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)");
+            	$stmt = $this->db->prepare("INSERT INTO users (firstname, lastname, email, password, verification) VALUES (:firstname, :lastname, :email, :password, :verification)");
                 $stmt->bindParam(':firstname', $_POST['firstname']);
                 $stmt->bindParam(':lastname', $_POST['lastname']);
                 $stmt->bindParam(':email', $_POST['email']);
                 $stmt->bindParam(':password', $hashedpassword);
+                $stmt->bindParam(':verification', $verification);
 
                 if($stmt->execute())
                 {
-                    echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Wiadomość została wysłana na adres podany w formularzu.</strong><br/>
-                    <a href='login.php'><strong>Zaloguj</strong></a></div>";
-                        
+                    //echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Wiadomość została wysłana na adres podany w formularzu.</strong><br/>"; 
             		$to = $email;
             		$subject = 'Witaj w systemie DTS';
             		$headers = "From: kozlowskimarekamil@gmail.com\r\n";
                     $headers .= "Reply-To: kozlowskimarekamil@gmail.com\r\n";
-                    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+                    $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
                     $message = '<html><body>';
-                    $message .= '<h3>Witaj w systemie DTS</h3><br/>Twoje dane do logowania to:<br/>Nazwa uzytkownika: ';
-                    $message .= $email;
-                    $message .='<br/>Haslo: ';
-                    $message .= $hashedpassword;//+link do login.php
-                    $message .= '<br/><br/>Powodzenia!!';
+                    $message .= "<h3>Witaj  ".$_POST['firstname']."</h3><br/>";
+                    $message .= "Dzięki za rejestrację.\n\n Musisz teraz aktywować konto przechodząc w poniższy link:\n\n ".DIR."activate.php?x=$email&y=$verification\n\n Powodzenia ! \n\n";
                     $message .= '</body></html>';
                     mail($to, $subject, $message, $headers);
+
+                    header('Location: index.php?action=joined');
+                    exit;
                 }   
             } 			
 		}
@@ -193,6 +193,21 @@ class dbfun
 		catch(PDOException $e)
 		{
 			echo $e->getMessage();
+		}
+	}
+//#############################################################################################################
+	public function get_id($email){
+		try{
+			$stmt = $this->$db->prepare("SELECT id FROM users WHERE email= :email");
+			$stmt->bindParam(':email', $email);
+			$stmt->execute();
+
+			$row = $stmt->fetch();
+			return $row['id'];
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();	
 		}
 	}
 //#############################################################################################################

@@ -50,7 +50,7 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
                               <input type="text" name="email" class="form-control" placeholder="Podaj swój adres email">
                             </div>
                         </div>
-                        <button type="submit" name="forgottenUser" class="btn btn-default">Nowe hasło</button> <a href="login.php" class="btn btn-default">Zaloguj</a>  <a href="register.php" class="btn btn-default">Zarejestruj</a>
+                        <button type="submit" name="forgottenUser" class="btn btn-default">Nowe hasło</button> <a href="login.php" class="btn btn-default">Zaloguj</a>  <a href="index.php" class="btn btn-default">Zarejestruj</a>
                         <br><br>
                         <div class="errorTxt"></div>
                     </form>

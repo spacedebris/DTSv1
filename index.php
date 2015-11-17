@@ -53,7 +53,12 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
                     <h2>Zarejestruj się</h2>
                     <p>Masz już konto ? <a href='login.php'>Zaloguj</a></p>
                     <hr>
-                    <?php if(!isset($_POST['registerUser'])){ ?>
+                    <?php
+                    if(isset($_GET['action']) && $_GET['action'] == 'joined'){
+                        echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Rejestracja udana, wiadomość z linkiem aktywacyjnym wysłana na adres podany w formularzu.</strong><br/>";
+                    }
+                    if(!isset($_POST['registerUser'])){ 
+                    ?>
                     <form id="registration-form" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                         <div class="form-group">
                             <div class="input-group">
@@ -80,7 +85,7 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
                     <?php 
                     } else {
                         $dbfun->register($_POST['email']);
-                        $dbfun = null;
+                        //$dbfun = null;
                     }?>
                 </div>
             </div>

@@ -41,9 +41,16 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
             <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
                 <h2>Zaloguj się</h2>
                 <hr>
-                <?php 
-                if(!isset($_POST['loginUser']))
-                {?>
+                <?php
+                if(isset($_GET['action'])){
+                    switch ($_GET['action']) {
+                        case 'active':            
+                            echo "<h2 class='bg-success'>Your account is now active you may now log in.</h2>";
+                            break;
+                    }
+                } 
+                if(!isset($_POST['loginUser'])){
+                ?>
                 <form id="login-form" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                     <div class="form-group">
                         <div class="input-group">
