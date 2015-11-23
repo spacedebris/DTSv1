@@ -12,6 +12,26 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="js/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#changePassword-form').validate({
+                rules: {
+                    oldpassword: {required:true},
+                    newpassword: {required:true, minlength: 5},
+                    confirmpassword: {required:true, minlength: 5, equalTo: '#newpassword'}
+                },
+                messages: {
+                    oldpassword: {required: 'Musisz podać dotychczasowe hasło'},
+                    newpassword: {required: 'Musisz podać nowe hasło', minlength: 'Hasło musi zawierać min 5 znaków'},
+                    confirmpassword: {required: 'Musisz powtórzyć nowe hasło', minlength: 'Hasło musi zawierać min 5 znaków', equalTo: 'Hasła nie są identyczne'}
+
+                },
+                errorElement: 'div',
+                errorLabelContainer: '.errorTxt'
+            });
+        });
+    </script>    
     <style type="text/css">
         body { background: url(assets/bglight.png);}
         .hero-unit { background-color: #fff; }
@@ -32,26 +52,27 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                 <hr>
                 <h4>Zmień hasło</h4>
                 <?php if(!isset($_POST['changePassword'])){ ?>
-                <form role="form" method="post" data-toggle="validator" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <form id="changePassword-form" role="form" method="post" data-toggle="validator" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon glyphicon glyphicon-lock"></span>
-                            <input type="password" name="oldpassword" id="oldpassword" class="form-control" placeholder="Stare hasło" required="required">
+                            <input type="password" name="oldpassword" id="oldpassword" class="form-control" placeholder="Stare hasło">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon glyphicon glyphicon-lock"></span>
-                            <input type="password" name="newpassword" id="newpassword" class="form-control" placeholder="Nowe hasło" required="required">
-                            <input type="password" data-match="#newpassword" data-match-error="Hasła nie są identyczne" name="confirmpassword" id="confirmpassword" class="form-control" placeholder="Potwierdź hasło" required="required">
+                            <input type="password" name="newpassword" id="newpassword" class="form-control" placeholder="Nowe hasło">
+                            <input type="password" name="confirmpassword" id="confirmpassword" class="form-control" placeholder="Potwierdź hasło">
                         </div>
-                        <div class="help-block with-errors"></div>
                     </div>
                     <button type="submit" name="changePassword" class="btn btn-default">Zmień hasło</button>
+                    <br><br>
+                    <div class="errorTxt"></div>
                 </form>
                 <?php
                 } else {  
-                    $dbfun->changePassword($_SESSION['key'], md5($_POST['oldpassword'])); 
+                    $dbfun->changePassword($_SESSION['key'], $_POST['oldpassword'], password_hash($_POST['confirmpassword'], PASSWORD_DEFAULT)); 
                 }
                 ?>
 

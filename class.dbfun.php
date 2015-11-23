@@ -153,26 +153,14 @@ class dbfun
 		
 	}
 //#############################################################################################################
-	public function changePassword($email, $password)
+	public function changePassword($email, $password, $newpassword)
 	{
+		$hashed = $this->get_user_hash($email);
 		try
-		{
-			$stmt = $this->db->prepare("SELECT id FROM users WHERE email= :email AND password= :password");
-			$stmt->bindParam(':email', $email);
-			$stmt->bindParam(':password', $password);
-        	$stmt->execute();
-
-        	$rows = $stmt->fetch(PDO::FETCH_NUM);
-        	unset($stmt);
-			if (is_array($rows))
-			{
-				$id = $rows[0];
-            	$password = md5($_POST['confirmpassword']);
-
-            	$stmt = $this->db->prepare("UPDATE users SET password= :password WHERE id= :id");
-            	$stmt->bindParam(':id', $id);
-           		$stmt->bindParam(':password', $password);
-            	$stmt->execute();
+		{	
+			if(password_verify($password, $hashed) == 1){
+            	$stmt = $this->db->prepare("UPDATE users SET password=? WHERE email=?");
+            	$stmt->execute(array($newpassword, $email));
             	echo "<div class='alert alert-danger' role='alert' style='text-algin:center'>
             	    <strong>Twoje hasło zostało zmienione</strong>.</div>";
         	}
