@@ -204,12 +204,10 @@ class dbfun
 	}
 //#############################################################################################################
 	public function isAdmin($email)
-	{
+	{	
 		$isadmin = 1;
-		$stmt = $this->db->prepare("SELECT id FROM users WHERE email= :email AND isadmin= :isadmin");
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':isadmin', $isadmin);
-        $stmt->execute();
+		$stmt = $this->db->prepare("SELECT id FROM users WHERE email=? AND isadmin=?");
+        $stmt->execute(array($email, $isadmin));
 		$rows = $stmt->fetch(PDO::FETCH_NUM);
 		if(is_array($rows))
 		{
@@ -217,6 +215,25 @@ class dbfun
 		}
 		else
 			return 0;
+	}
+//#############################################################################################################
+	public function getUserDetails($email){
+		try{
+			$stmt = $this->db->prepare("SELECT * FROM users WHERE email= :email");
+			$stmt->bindParam('email', $email);
+			$stmt->execute();
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);	
+			
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
+		
+			
+
+
 	}
 //#############################################################################################################
 	public function showTableUsers()

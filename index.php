@@ -53,7 +53,7 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
                     <hr>
                     <?php
                     if(isset($_GET['action']) && $_GET['action'] == 'joined'){
-                        echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Rejestracja udana, wiadomość z linkiem aktywacyjnym wysłana na adres podany w formularzu.</strong><br/></div>";
+                        echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Konto zostało utworzone jednak jest jeszcze nieaktywne, odbierz list wysłany na twój adres e-mail i kliknij w link weryfikujący.</strong><br/></div>";
                     }
                     if(!isset($_POST['registerUser'])){ 
                     ?>

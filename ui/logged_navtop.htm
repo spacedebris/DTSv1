@@ -7,16 +7,16 @@
                 <ul class="nav pull-right">       
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Opcje</a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo $_SESSION['key'];?></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Zadania</a></li>
+                                <li><a href="profile.php">Profil</a></li>
                                 <li class="dropdown"><a href="settings.php">Ustawienia konta</a></li>
                                 <li class="divider"></li>
                                 <li><a href="logout.php">Wyloguj</a></li>
                             </ul>
                         </li>
                     </ul>
-                    <li class="brand "><?php echo $_SESSION['key'];?></li>
                 </ul>
             </div>
         </div>
