@@ -14,6 +14,7 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <script src="js/jquery.validate.min.js"></script>
     <script>
+        //zmiana hasła
         $(document).ready(function(){
             $('#changePassword-form').validate({
                 rules: {
@@ -25,12 +26,25 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                     oldpassword: {required: 'Musisz podać dotychczasowe hasło'},
                     newpassword: {required: 'Musisz podać nowe hasło', minlength: 'Hasło musi zawierać min 5 znaków'},
                     confirmpassword: {required: 'Musisz powtórzyć nowe hasło', minlength: 'Hasło musi zawierać min 5 znaków', equalTo: 'Hasła nie są identyczne'}
-
                 },
                 errorElement: 'div',
                 errorLabelContainer: '.errorTxt'
             });
         });
+        //zmiana mail
+        $(document.ready(function(){
+            $('#changeEmail-form').validate({
+                rules: {
+                    changedEmail: {required: true, email: true}
+
+                },
+                messages: {
+                    changedEmail: {required: 'Musisz podać adres email', email: 'Podaj właściwy adres email'}
+                },
+                errorElement: 'div',
+                errorLabelContainer: '.errorTxt'
+            });
+        }));
     </script>    
     <style type="text/css">
         body { background: url(assets/bglight.png);}
@@ -47,12 +61,26 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
             <div class="container hero-unit">
                 <h3><?php echo ($result['firstname'].' '.$result['lastname']); ?></h3>
                 <hr>      
-                <h6><?php echo $_SESSION['key'];?></h6>
-                <button class="btn btn-default">Zmień email</button>
+                <h4>Zmień email</h4>
+                <?php if(!isset($_POST['changeEmailbtn'])){ ?>
+                <form id="changeEmail-form" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" >
+                    <div class="form-group">
+                        <input type="text" name="changedEmail" id="changedEmail" placeholder="Adres email" value="<?php echo $_SESSION['key'];?>">
+                    </div>
+                    <button type="submit" name="changeEmailbtn" class="btn btn-default">Zmień</button>
+                    <br><br>
+                    <div class="errorTxt"></div>
+                </form>
+                <?php
+                } else {
+                    $dbfun->changeEmail($_POST['changedEmail']);
+                    $dbfun = null;
+                }
+                ?>
                 <hr>
                 <h4>Zmień hasło</h4>
                 <?php if(!isset($_POST['changePassword'])){ ?>
-                <form id="changePassword-form" role="form" method="post" data-toggle="validator" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <form id="changePassword-form" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon glyphicon glyphicon-lock"></span>
@@ -66,19 +94,17 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                             <input type="password" name="confirmpassword" id="confirmpassword" class="form-control" placeholder="Potwierdź hasło">
                         </div>
                     </div>
-                    <button type="submit" name="changePassword" class="btn btn-default">Zmień hasło</button>
+                    <button type="submit" name="changePassword" class="btn btn-default">Zmień</button>
                     <br><br>
-                    <div class="errorTxt"></div>
+                    <div class="errorTxtModal"></div>
                 </form>
                 <?php
                 } else {  
                     $dbfun->changePassword($_SESSION['key'], $_POST['oldpassword'], password_hash($_POST['confirmpassword'], PASSWORD_DEFAULT)); 
+                    $dbfun = null;
                 }
                 ?>
-
-
             </div>
-
         <?php include("ui/footer.htm"); ?>
     </body>
 </html>

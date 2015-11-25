@@ -176,6 +176,21 @@ class dbfun
 		}
 	}
 //#############################################################################################################
+	public function changeEmail($email){
+		try
+		{
+			$stmt = $this->db->prepare("UPDATE users SET email=? WHERE email=?");
+			$stmt->execute(array($email, $_SESSION['key']));
+			$_SESSION['key'] = $email;
+			echo "<div class='alert alert-danger' role='alert' style='text-algin:center'>
+            	    <strong>Twój mail został zaktualizowany</strong>.</div>";
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
+	}
+//#############################################################################################################
 	public function get_id($email){
 		try{
 			$stmt = $this->$db->prepare("SELECT id FROM users WHERE email= :email");
@@ -218,10 +233,6 @@ class dbfun
 		{
 			echo $e->getMessage();
 		}
-		
-			
-
-
 	}
 //#############################################################################################################
 	public function showTableUsers()
