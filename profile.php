@@ -14,7 +14,6 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <script src="js/jquery.validate.min.js"></script>
     <script>
-        //zmiana hasła
         $(document).ready(function(){
             $('#changePassword-form').validate({
                 rules: {
@@ -28,11 +27,10 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                     confirmpassword: {required: 'Musisz powtórzyć nowe hasło', minlength: 'Hasło musi zawierać min 5 znaków', equalTo: 'Hasła nie są identyczne'}
                 },
                 errorElement: 'div',
-                errorLabelContainer: '.errorTxt'
+                errorLabelContainer: '.errorpass'
             });
         });
-        //zmiana mail
-        $(document.ready(function(){
+        jQuery(document.ready(function(){
             $('#changeEmail-form').validate({
                 rules: {
                     changedEmail: {required: true, email: true}
@@ -42,7 +40,7 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                     changedEmail: {required: 'Musisz podać adres email', email: 'Podaj właściwy adres email'}
                 },
                 errorElement: 'div',
-                errorLabelContainer: '.errorTxt'
+                errorLabelContainer: '.erroremail'
             });
         }));
     </script>    
@@ -73,7 +71,7 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                     </div>
                     <button type="submit" name="changeEmailbtn" class="btn btn-default">Zmień</button>
                     <br><br>
-                    <div class="errorTxt"></div>
+                    <div class="erroremail"></div>
                 </form>
                 <?php
                 } else {
@@ -100,7 +98,7 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                     </div>
                     <button type="submit" name="changePassword" class="btn btn-default">Zmień</button>
                     <br><br>
-                    <div class="errorTxtModal"></div>
+                    <div class="errorpass"></div>
                 </form>
                 <?php
                 } else {  
