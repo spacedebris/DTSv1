@@ -1,5 +1,5 @@
 <?php 
-require('dbconfig.php');
+include('dbconfig.php');
 if(!$dbfun->is_logged_in()){ header('Location: login.php'); } 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -55,7 +55,11 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
 </head>
     <body>
         <?php 
-            include_once("ui/logged_navtop.htm"); 
+            if($dbfun->isadmin($_SESSION['key']) == 1){
+                include_once("ui/logged_navtop_admin.htm");
+            }else {
+                include_once("ui/logged_navtop.htm");    
+            }
             $result = $dbfun->getUserDetails($_SESSION['key']);
         ?>
             <div class="container hero-unit">

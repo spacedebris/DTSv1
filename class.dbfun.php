@@ -182,8 +182,8 @@ class dbfun
 			$stmt = $this->db->prepare("UPDATE users SET email=? WHERE email=?");
 			$stmt->execute(array($email, $_SESSION['key']));
 			$_SESSION['key'] = $email;
-			echo "<div class='alert alert-danger' role='alert' style='text-algin:center'>
-            	    <strong>Twój mail został zaktualizowany</strong>.</div>";
+			header('Location: profile.php');
+			// mejl wysylajacy info
 		}
 		catch(PDOException $e)
 		{

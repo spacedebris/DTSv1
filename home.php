@@ -1,8 +1,7 @@
-<?php
-session_start();
-if (!isset($_SESSION['key'])) {
-header('Location: logout.php');
-}?>
+<?php 
+include('dbconfig.php');
+if(!$dbfun->is_logged_in()){ header('Location: login.php'); } 
+?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
@@ -23,7 +22,13 @@ header('Location: logout.php');
 </head>
 
     <body>
-        <?php include_once("ui/logged_navtop.htm"); ?> <!--navtop-->
+        <?php
+        if($dbfun->isadmin($_SESSION['key']) == 1){
+            include_once("ui/logged_navtop_admin.htm");
+        }else {
+            include_once("ui/logged_navtop.htm");    
+        } 
+        ?>
 
         <div class="container hero-unit">
             <h1>Witaj w systemie DTS.</h1>
