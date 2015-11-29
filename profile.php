@@ -14,6 +14,40 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <script src="js/jquery.validate.min.js"></script>
     <script>
+    $(document).ready(function(){
+        $('#changePassword-form').each(function(){
+            $(this).validate({
+                rules: {
+                    oldpassword: {required:true},
+                    newpassword: {required:true, minlength: 5},
+                    confirmpassword: {required:true, minlength: 5, equalTo: '#newpassword'}
+                },
+                messages: {
+                    oldpassword: {required: 'Musisz podać dotychczasowe hasło'},
+                    newpassword: {required: 'Musisz podać nowe hasło', minlength: 'Hasło musi zawierać min 5 znaków'},
+                    confirmpassword: {required: 'Musisz powtórzyć nowe hasło', minlength: 'Hasło musi zawierać min 5 znaków', equalTo: 'Hasła nie są identyczne'}
+                },
+                errorElement: 'div',
+                errorLabelContainer: '.errorpass'
+            });
+        });
+    });
+    
+    $(document).ready(function(){
+        $('#changeEmail-form').each(function(){
+            $(this).validate({
+                rules: {
+                    changedEmail: {required: true, email: true}
+                },
+                messages: {
+                    changedEmail: {required: 'Musisz podać adres email', email: 'Podaj właściwy adres email'}
+                },
+                errorElement: 'div',
+                errorLabelContainer: '.erroremail'
+            });
+        });
+    });
+    /*
         $(document).ready(function(){
             $('#changePassword-form').validate({
                 rules: {
@@ -30,11 +64,10 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                 errorLabelContainer: '.errorpass'
             });
         });
-        jQuery(document.ready(function(){
+        $(document.ready(function(){
             $('#changeEmail-form').validate({
                 rules: {
                     changedEmail: {required: true, email: true}
-
                 },
                 messages: {
                     changedEmail: {required: 'Musisz podać adres email', email: 'Podaj właściwy adres email'}
@@ -43,6 +76,7 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                 errorLabelContainer: '.erroremail'
             });
         }));
+    */
     </script>    
     <style type="text/css">
         body { background: url(assets/bglight.png);}
