@@ -16,9 +16,9 @@ każdy użytkownik może tworzyć listę zadań do wydrukowania
 Funkcjonalność po stronie serwera:
 
 v wbudowane konto administratora
-  tworzenie kont użytkowników 
+v tworzenie kont użytkowników 
   weryfikacja konta użytkownika np. poprzez domenę adresu email ur.edu.pl
-  po utworzeniu konta możliwość zmiany adresu email
+v po utworzeniu konta możliwość zmiany adresu email
   zadania, grupy zadań i użytkownicy przechowywani są w bazie danych
 v resetowanie zapomnianego hasła
 v haszowanie hasła

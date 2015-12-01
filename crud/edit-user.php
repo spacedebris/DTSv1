@@ -27,7 +27,28 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
             include_once("ui/logged_navtop.htm");    
         } 
         ?>
-        <!--content-> -->
+        <div class="container hero-unit">
+        	<?php 
+        		if(!isset($_POST['editUser'])){
+        	?>
+        		<form id="edituser-form" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+        			<div class="form-group">
+                        <div class="input-group">
+                            <input type="text" name="firstname" class="form-control" placeholder="Imię">
+                            <input type="text" name="lastname" class="form-control" placeholder="Nazwisko">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    	<div class="input-group">
+                            <input type="text" name="email" class="form-control" placeholder="Email">
+                        </div>
+                    </div>
+
+				</form>
+        	<?php } ?>
+        	
+        </div>
         <?php include("ui/footer.htm"); ?>
     </body>
 </html>

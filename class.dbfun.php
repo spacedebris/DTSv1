@@ -111,8 +111,7 @@ class dbfun
 		}
 	}
 //#############################################################################################################
-	public function register($email)
-	{
+	public function register($email){
 		
 			$hashedpassword = password_hash($_POST['password2'], PASSWORD_DEFAULT);
 			$verification = md5(uniqid(rand(),true));
@@ -150,7 +149,6 @@ class dbfun
                     exit;
                 }   
             } 			
-		
 	}
 //#############################################################################################################
 	public function changePassword($email, $password, $newpassword)
@@ -167,7 +165,7 @@ class dbfun
         	else
         	{
             	echo "<div class='alert alert-danger' role='alert' style='text-algin:center'>
-                	<strong>Dotychczasowe hasło nie jest poprawne</strong><a href='settings.php'><br /><strong>Jeszcze raz</strong></a></div>";
+                	<strong>Dotychczasowe hasło nie jest poprawne</strong><a href='profile.php'><br /><strong>Jeszcze raz</strong></a></div>";
         	}
 		}
 		catch(PDOException $e)
@@ -206,8 +204,7 @@ class dbfun
 		}
 	}
 //#############################################################################################################
-	public function isAdmin($email)
-	{	
+	public function isAdmin($email){	
 		$isadmin = 1;
 		$stmt = $this->db->prepare("SELECT id FROM users WHERE email=? AND isadmin=?");
         $stmt->execute(array($email, $isadmin));
@@ -235,127 +232,6 @@ class dbfun
 		}
 	}
 //#############################################################################################################
-	public function showTableUsers()
-	{
-		$stmt = $this->db->prepare("SELECT * FROM users");
-		$stmt->execute();
-		while($row = $stmt->fetch(PDO::FETCH_ASSOC))
-		{
-		echo '<div class="form-group col-sm-12">';
-			echo '<tr>';
-            echo '<td>'. $row['id'] .'</td>';
-            echo '<td>'. $row['firstname'] . ' ' . $row['lastname'] .'</td>';
-            echo '<td>'. $row['email'] .'</td>';
-            echo '<td>'. $row['isadmin'] .'</td>';
-            echo '<td>
-                    <a class="edit_user btn btn-xs btn-info" href="#edit_user" data-toggle="modal" data-id="'.$row['id'].'">Edytuj</a>
-                    <a class="delete_user btn btn-xs btn-danger" href="#delete_user" data-toggle="modal" data-id="'.$row['id'].'">Usuń</a>
-                    <a class="add_user btn btn-xs btn-primary" href="php/crud/add_user.php?id='. $row['id'] . '">Dodaj</a>
-                 </td>';
-        	echo '</tr>';
-        echo '</div>';
-		}
-	}
-
-// OLD ONE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public function create($fname,$lname,$email,$contact)
-	{
-		try
-		{
-			$stmt = $this->db->prepare("INSERT INTO tbl_users(first_name,last_name,email_id,contact_no) VALUES(:fname, :lname, :email, :contact)");
-			$stmt->bindparam(":fname",$fname);
-			$stmt->bindparam(":lname",$lname);
-			$stmt->bindparam(":email",$email);
-			$stmt->bindparam(":contact",$contact);
-			$stmt->execute();
-			return true;
-		}
-		catch(PDOException $e)
-		{
-			echo $e->getMessage();	
-			return false;
-		}
-	}
-	
-	public function getID($id)
-	{
-		$stmt = $this->db->prepare("SELECT * FROM tbl_users WHERE id=:id");
-		$stmt->execute(array(":id"=>$id));
-		$editRow=$stmt->fetch(PDO::FETCH_ASSOC);
-		return $editRow;
-	}
-	
-	public function update($id,$fname,$lname,$email,$contact)
-	{
-		try
-		{
-			$stmt=$this->db->prepare("UPDATE tbl_users SET first_name=:fname, 
-		                                               last_name=:lname, 
-													   email_id=:email, 
-													   contact_no=:contact
-													WHERE id=:id ");
-			$stmt->bindparam(":fname",$fname);
-			$stmt->bindparam(":lname",$lname);
-			$stmt->bindparam(":email",$email);
-			$stmt->bindparam(":contact",$contact);
-			$stmt->bindparam(":id",$id);
-			$stmt->execute();
-			
-			return true;	
-		}
-		catch(PDOException $e)
-		{
-			echo $e->getMessage();	
-			return false;
-		}
-	}
-	
-	public function delete($id)
-	{
-		$stmt = $this->db->prepare("DELETE FROM tbl_users WHERE id=:id");
-		$stmt->bindparam(":id",$id);
-		$stmt->execute();
-		return true;
-	}
-	
-	/* paging */
-	
-	public function dataview($query)
-	{
-		$stmt = $this->db->prepare($query);
-		$stmt->execute();
-	
-		if($stmt->rowCount()>0)
-		{
-			while($row=$stmt->fetch(PDO::FETCH_ASSOC))
-			{
-				?>
-                <tr>
-                <td><?php print($row['id']); ?></td>
-                <td><?php print($row['first_name']); ?></td>
-                <td><?php print($row['last_name']); ?></td>
-                <td><?php print($row['email_id']); ?></td>
-                <td><?php print($row['contact_no']); ?></td>
-                <td align="center">
-                <a href="edit-data.php?edit_id=<?php print($row['id']); ?>"><i class="glyphicon glyphicon-edit"></i></a>
-                </td>
-                <td align="center">
-                <a href="delete.php?delete_id=<?php print($row['id']); ?>"><i class="glyphicon glyphicon-remove-circle"></i></a>
-                </td>
-                </tr>
-                <?php
-			}
-		}
-		else
-		{
-			?>
-            <tr>
-            <td>Nothing here...</td>
-            </tr>
-            <?php
-		}
-	}
-	
 	public function paging($query,$records_per_page)
 	{
 		$starting_position=0;
@@ -366,9 +242,10 @@ class dbfun
 		$query2=$query." limit $starting_position,$records_per_page";
 		return $query2;
 	}
-	
+//#############################################################################################################
 	public function paginglink($query,$records_per_page)
 	{
+		
 		$self = $_SERVER['PHP_SELF'];
 		
 		$stmt = $this->db->prepare($query);
@@ -388,8 +265,8 @@ class dbfun
 			if($current_page!=1)
 			{
 				$previous =$current_page-1;
-				echo "<li><a href='".$self."?page_no=1'>First</a></li>";
-				echo "<li><a href='".$self."?page_no=".$previous."'>Previous</a></li>";
+				echo "<li><a href='".$self."?page_no=1'>Pierwszy</a></li>";
+				echo "<li><a href='".$self."?page_no=".$previous."'>Poprzedni</a></li>";
 			}
 			for($i=1;$i<=$total_no_of_pages;$i++)
 			{
@@ -405,13 +282,46 @@ class dbfun
 			if($current_page!=$total_no_of_pages)
 			{
 				$next=$current_page+1;
-				echo "<li><a href='".$self."?page_no=".$next."'>Next</a></li>";
-				echo "<li><a href='".$self."?page_no=".$total_no_of_pages."'>Last</a></li>";
+				echo "<li><a href='".$self."?page_no=".$next."'>Następny</a></li>";
+				echo "<li><a href='".$self."?page_no=".$total_no_of_pages."'>Ostatni</a></li>";
 			}
 			?></ul><?php
 		}
 	}
+//#############################################################################################################
+	public function usersview($query)
+	{
+		$stmt = $this->db->prepare($query);
+		$stmt->execute();
 	
-	/* paging */
-	
+		if($stmt->rowCount()>0)
+		{
+			while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+			{
+				?>
+                <tr>
+                <td><?php print($row['id']); ?></td>
+                <td><?php print($row['firstname']); ?></td>
+                <td><?php print($row['lastname']); ?></td>
+                <td><?php print($row['email']); ?></td>
+                <td align="center">
+                <a href="crud/edit-user.php?edit_id=<?php print($row['id']); ?>"><i class="icon-edit"></i></a>
+                </td>
+                <td align="center">
+                <a href="delete-user.php?delete_id=<?php print($row['id']); ?>"><i class="icon-trash"></i></a>
+                </td>
+                </tr>
+                <?php
+			}
+		}
+		else
+		{
+			?>
+            <tr>
+            <td>Brak danych</td>
+            </tr>
+            <?php
+		}
+		
+	}
 }
