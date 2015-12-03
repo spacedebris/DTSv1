@@ -8,8 +8,7 @@ class dbfun
 		$this->db = $DB_con;
 	}
 //#############################################################################################################
-	public function login($email, $password)
-	{
+	public function login($email, $password){
 		$hashed = $this->get_user_hash($email);
 		try
 		{
@@ -151,8 +150,7 @@ class dbfun
             } 			
 	}
 //#############################################################################################################
-	public function changePassword($email, $password, $newpassword)
-	{
+	public function changePassword($email, $password, $newpassword){
 		$hashed = $this->get_user_hash($email);
 		try
 		{	
@@ -191,7 +189,7 @@ class dbfun
 //#############################################################################################################
 	public function get_id($email){
 		try{
-			$stmt = $this->$db->prepare("SELECT id FROM users WHERE email= :email");
+			$stmt = $this->db->prepare("SELECT id FROM users WHERE email= :email");
 			$stmt->bindParam(':email', $email);
 			$stmt->execute();
 
@@ -219,7 +217,7 @@ class dbfun
 //#############################################################################################################
 	public function getUserDetails($email){
 		try{
-			$stmt = $this->db->prepare("SELECT * FROM users WHERE email= :email");
+			$stmt = $this->db->prepare("SELECT * FROM users WHERE email=:email");
 			$stmt->bindParam('email', $email);
 			$stmt->execute();
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);	
@@ -232,6 +230,75 @@ class dbfun
 		}
 	}
 //#############################################################################################################
+	public function updateUser($id, $firstname, $lastname, $email){
+		try{
+			$stmt = $this->db->prepare("UPDATE users SET firstname=?,
+														 lastname=?,
+														 email=?
+												  	 WHERE id=?");
+			$stmt->execute(array($firstname,
+								 $lastname,
+								 $email,
+								 $id));
+			print_r($stmt);
+			echo $stmt->rowCount(). " rekord został zaktualizowany";
+			$stmt = null;
+			return true;
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+			return false;
+		}
+	}
+//#############################################################################################################
+	public function getUserDetailsbyID($id){
+		try{
+			$stmt = $this->db->prepare("SELECT * FROM users WHERE id=:id");
+			$stmt->execute(array(":id"=>$id));
+			$result=$stmt->fetch(PDO::FETCH_ASSOC);
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
+	}
+//#############################################################################################################
+	public function usersview($query){
+		$stmt = $this->db->prepare($query);
+		$stmt->execute();
+	
+		if($stmt->rowCount()>0)
+		{
+			while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+			{
+				?>
+                <tr>
+                <td><?php print($row['id']); ?></td>
+                <td><?php print($row['firstname']); ?></td>
+                <td><?php print($row['lastname']); ?></td>
+                <td><?php print($row['email']); ?></td>
+                <td align="center">
+                <a href="edit-user.php?edit_id=<?php print($row['id']); ?>"><i class="icon-edit"></i></a>
+                </td>
+                <td align="center">
+                <a href="delete-user.php?delete_id=<?php print($row['id']); ?>"><i class="icon-trash"></i></a>
+                </td>
+                </tr>
+                <?php
+			}
+		}
+		else
+		{
+			?>
+            <tr>
+            <td>Brak danych</td>
+            </tr>
+            <?php
+		}
+		
+	}
+	//#############################################################################################################
 	public function paging($query,$records_per_page)
 	{
 		$starting_position=0;
@@ -287,41 +354,5 @@ class dbfun
 			}
 			?></ul><?php
 		}
-	}
-//#############################################################################################################
-	public function usersview($query)
-	{
-		$stmt = $this->db->prepare($query);
-		$stmt->execute();
-	
-		if($stmt->rowCount()>0)
-		{
-			while($row=$stmt->fetch(PDO::FETCH_ASSOC))
-			{
-				?>
-                <tr>
-                <td><?php print($row['id']); ?></td>
-                <td><?php print($row['firstname']); ?></td>
-                <td><?php print($row['lastname']); ?></td>
-                <td><?php print($row['email']); ?></td>
-                <td align="center">
-                <a href="crud/edit-user.php?edit_id=<?php print($row['id']); ?>"><i class="icon-edit"></i></a>
-                </td>
-                <td align="center">
-                <a href="delete-user.php?delete_id=<?php print($row['id']); ?>"><i class="icon-trash"></i></a>
-                </td>
-                </tr>
-                <?php
-			}
-		}
-		else
-		{
-			?>
-            <tr>
-            <td>Brak danych</td>
-            </tr>
-            <?php
-		}
-		
 	}
 }
