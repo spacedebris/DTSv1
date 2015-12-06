@@ -230,27 +230,6 @@ class dbfun
 		}
 	}
 //#############################################################################################################
-	public function updateUser($id, $firstname, $lastname, $email){
-		try{
-			$stmt = $this->db->prepare("UPDATE users SET firstname=?,
-														 lastname=?,
-														 email=?
-												  	 WHERE id=?");
-			$stmt->execute(array($firstname,
-								 $lastname,
-								 $email,
-								 $id));
-			print_r($stmt);
-			echo $stmt->rowCount(). " rekord został zaktualizowany";
-			$stmt = null;
-			return true;
-		}
-		catch(PDOException $e){
-			echo $e->getMessage();
-			return false;
-		}
-	}
-//#############################################################################################################
 	public function getUserDetailsbyID($id){
 		try{
 			$stmt = $this->db->prepare("SELECT * FROM users WHERE id=:id");
@@ -261,6 +240,35 @@ class dbfun
 		catch(PDOException $e)
 		{
 			echo $e->getMessage();
+		}
+	}
+//#############################################################################################################
+	public function deleteUser($id){
+		$stmt = $this->db->prepare("DELETE FROM users WHERE id=:id");
+		$stmt->bindParam(":id", $id);
+		$stmt->execute();
+		return true;
+	}
+//#############################################################################################################
+	public function updateUser($id, $firstname, $lastname, $email){
+		try{
+			$stmt=$this->db->prepare("UPDATE users SET firstname=:firstname, 
+		                                               lastname=:lastname, 
+													   email=:email
+													WHERE id=:id ");
+			$stmt->bindValue(':firstname',$firstname, PDO::PARAM_STR);
+			$stmt->bindValue(':lastname',$lastname);
+			$stmt->bindValue(':email',$email);
+			$stmt->bindValue(':id',$id);
+			$stmt->execute();
+			
+			print_r($stmt);
+			echo $stmt->rowCount(). " rekord został zaktualizowany";
+			return true;
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+			return false;
 		}
 	}
 //#############################################################################################################
@@ -279,10 +287,10 @@ class dbfun
                 <td><?php print($row['lastname']); ?></td>
                 <td><?php print($row['email']); ?></td>
                 <td align="center">
-                <a href="edit-user.php?edit_id=<?php print($row['id']); ?>"><i class="icon-edit"></i></a>
+                <a href="edit_user.php?edit_id=<?php print($row['id']); ?>"><i class="icon-edit"></i></a>
                 </td>
                 <td align="center">
-                <a href="delete-user.php?delete_id=<?php print($row['id']); ?>"><i class="icon-trash"></i></a>
+                <a href="delete_user.php?delete_id=<?php print($row['id']); ?>"><i class="icon-trash"></i></a>
                 </td>
                 </tr>
                 <?php
@@ -296,7 +304,6 @@ class dbfun
             </tr>
             <?php
 		}
-		
 	}
 	//#############################################################################################################
 	public function paging($query,$records_per_page)

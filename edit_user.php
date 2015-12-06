@@ -33,7 +33,6 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                     $id = $_GET['edit_id'];
                     extract($dbfun->getUserDetailsbyID($id));
                 }
-                
         		if(!isset($_POST['editUser'])){
         	?>  
                 <table class="table table-bordered">
@@ -55,18 +54,14 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                                 <button type="submit" class="btn btn-primary" name="editUser">
                                     <span class="glyphicon glyphicon-edit"></span> Aktualizuj
                                 </button>
-                                <a href="settings.php" class="btn  btn-success"><i class="glyphicon glyphicon-backward"></i>Anuluj</a>
+                                <a href="users.php" class="btn  btn-success"><i class="glyphicon glyphicon-backward"></i>Anuluj</a>
                             </td>
                         </tr>
     				</form>
                 </table>
         	<?php 
         		}else{
-        			$firstname = $_POST['firstname'];
-        			$lastname = $_POST['lastname'];
-        			$email = $_POST['email'];
-                    $id = $dbfun->get_id($email);
-        			if($dbfun->updateUser($id, $firstname, $lastname, $email)){
+        			if($dbfun->updateUser($dbfun->get_id($email), $_POST['firstname'], $_POST['lastname'], $_POST['email'])){
         				echo "<div class='alert alert-info'>
                                 <strong>Rekord został uaktualniony / <a href='users.php'>Wróć</a></div>";
         			}

@@ -51,7 +51,9 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                 <tr>
                     <td colspan="7" align="center">
                         <div class="pagination-wrap">
-                        <?php $dbfun->paginglink($query,$records_per_page); ?>
+                        <?php 
+                            $dbfun->paginglink($query,$records_per_page); 
+                        ?>
                         </div>
                     </td>
                 </tr>
