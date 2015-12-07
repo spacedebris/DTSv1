@@ -40,11 +40,12 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                     <th>Imię</th>
                     <th>Nazwisko</th>
                     <th>Email</th>
+                    <th>Admin</th>
                     <th colspan="2" align="center">Akcja</th> 
                 </tr>
                 <?php
                     $query = "SELECT * FROM users";       
-                    $records_per_page=3;
+                    $records_per_page=10;
                     $newquery = $dbfun->paging($query,$records_per_page);
                     $dbfun->usersview($newquery);
                 ?>

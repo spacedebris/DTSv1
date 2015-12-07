@@ -286,6 +286,7 @@ class dbfun
                 <td><?php print($row['firstname']); ?></td>
                 <td><?php print($row['lastname']); ?></td>
                 <td><?php print($row['email']); ?></td>
+                <td><?php print($row['isadmin']) ?></td>
                 <td align="center">
                 <a href="edit_user.php?edit_id=<?php print($row['id']); ?>"><i class="icon-edit"></i></a>
                 </td>
