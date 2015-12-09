@@ -76,12 +76,10 @@ if(isset($_POST['btn-del']))
              </tr>
              <?php
          }
-         ?>
-         
+         ?>  
          <?php
      }
      ?>
-
 <p>
 <?php
 if(isset($_GET['delete_id']))
@@ -98,11 +96,9 @@ if(isset($_GET['delete_id']))
 
     <?php
 }
-
 ?>
 </p>
 </div>  
-
         <?php include("ui/footer.htm"); ?>
     </body>
 </html>

@@ -250,20 +250,20 @@ class dbfun
 		return true;
 	}
 //#############################################################################################################
-	public function updateUser($id, $firstname, $lastname, $email){
+	public function updateUser($id, $firstname, $lastname, $email, $isadmin){
 		try{
 			$stmt=$this->db->prepare("UPDATE users SET firstname=:firstname, 
 		                                               lastname=:lastname, 
-													   email=:email
+													   email=:email,
+													   isadmin=:isadmin
 													WHERE id=:id ");
 			$stmt->bindValue(':firstname',$firstname, PDO::PARAM_STR);
 			$stmt->bindValue(':lastname',$lastname);
 			$stmt->bindValue(':email',$email);
+			$stmt->bindValue(':isadmin',$isadmin);
 			$stmt->bindValue(':id',$id);
 			$stmt->execute();
-			
-			print_r($stmt);
-			echo $stmt->rowCount(). " rekord został zaktualizowany";
+
 			return true;
 		}
 		catch(PDOException $e){
@@ -318,8 +318,7 @@ class dbfun
 		return $query2;
 	}
 //#############################################################################################################
-	public function paginglink($query,$records_per_page)
-	{
+	public function paginglink($query,$records_per_page){
 		
 		$self = $_SERVER['PHP_SELF'];
 		
