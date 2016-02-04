@@ -243,6 +243,31 @@ class dbfun
 		}
 	}
 //#############################################################################################################
+	public function addUser($firstname, $lastname, $email, $password, $isadmin){
+		$hashedpassword = password_hash($password, PASSWORD_DEFAULT);
+		$verification = "YES";
+
+		try{
+			$stmt = $this->db->prepare("INSERT INTO users 
+				(firstname, lastname, email, password, verification, isadmin) VALUES 
+				(:firstname, :lastname, :email, :password, :verification, :isadmin) ");
+			$stmt->bindParam(':firstname', $firstname);
+			$stmt->bindParam(':lastname', $lastname);
+			$stmt->bindParam(':email', $email);
+			$stmt->bindParam('password', $hashedpassword);
+			$stmt->bindParam('verification', $verification);
+			$stmt->bindParam('isadmin', $isadmin);
+			$stmt->execute();
+
+			return true;
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+			return false;
+		}
+
+	}
+//#############################################################################################################
 	public function deleteUser($id){
 		$stmt = $this->db->prepare("DELETE FROM users WHERE id=:id");
 		$stmt->bindParam(":id", $id);
@@ -359,7 +384,12 @@ class dbfun
 				echo "<li><a href='".$self."?page_no=".$next."'>Następny</a></li>";
 				echo "<li><a href='".$self."?page_no=".$total_no_of_pages."'>Ostatni</a></li>";
 			}
-			?></ul><?php
+			?>		 
+					<li>
+						<a href="add_user.php">Dodaj użytkownika</a>
+					</li>
+				</ul>
+			<?php
 		}
 	}
 }

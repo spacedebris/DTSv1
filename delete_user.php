@@ -47,7 +47,7 @@ if(isset($_POST['btn-del']))
     {
         ?>
         <div class="alert alert-danger">
-        <strong>Jesteś pewien</strong> ,że chcesz usunąć? 
+        <strong>Jesteś pewien</strong>, że chcesz usunąć? 
         </div>
         <?php
     }
