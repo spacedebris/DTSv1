@@ -3,9 +3,9 @@ require('dbconfig.php');
 if(!$dbfun->is_logged_in()){ header('Location: login.php'); } 
 if(isset($_POST['btn-update'])){
     $id = $_GET['edit_id'];
-    $firstname = $_POST['first_name'];
-    $lastname = $_POST['last_name'];
-    $email = $_POST['email_id'];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $email = $_POST['email'];
     $isadmin = $_POST['isadmin'];
     
     if($dbfun->updateUser($id,$firstname,$lastname,$email,$isadmin))
@@ -36,6 +36,29 @@ if(isset($_GET['edit_id'])){
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $('#edit_user-form').validate({
+            rules: {
+                firstname: {required: true},
+                lastname: {required: true},
+                email: {required: true, email: true},
+                password: {required: true, minlength: 5},
+                repassword: {required: true, minlength: 5, equalTo: '#password'}
+            },
+            messages: {
+                firstname: {required: 'Musisz podać imię'},
+                lastname: {required: 'Musisz podać nazwisko'},
+                email: {required: 'Musisz podać adres', email: 'Musisz podać poprawny adres'},
+                password: {required: 'Musisz podać hasło', minlength: 'Hasło musi zawierać min 5 znaków'},
+                repassword: {required: 'Musisz powtórzyć hasło', minlength: 'Hasło musi zawierać min 5 znaków', equalTo: 'Hasła muszą być identyczne'}
+            },
+            errorElement: 'div',
+            errorLabelContainer: '.errorTxt'
+        });
+    });
+    </script>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style type="text/css">
         body { background: url(assets/bglight.png);}
@@ -59,24 +82,23 @@ if(isset($_GET['edit_id'])){
             echo $msg;
         }
         ?>
-        <form method='post'>
-         
+        <form id="edit_user-form" role="form" method='post'>
             <table class='table table-bordered'>
                 <tr>
                     <td>Imię</td>
-                    <td><input type='text' name='first_name' class='form-control' value="<?php echo $firstname; ?>" required></td>
+                    <td><input type='text' name='firstname' class='form-control' value="<?php echo $firstname; ?>"></td>
                 </tr>
                 <tr>
                     <td>Nazwisko</td>
-                    <td><input type='text' name='last_name' class='form-control' value="<?php echo $lastname; ?>" required></td>
+                    <td><input type='text' name='lastname' class='form-control' value="<?php echo $lastname; ?>"></td>
                 </tr>
                 <tr>
                     <td>E-mail ID</td>
-                    <td><input type='text' name='email_id' class='form-control' value="<?php echo $email; ?>" required></td>
+                    <td><input type='text' name='email' class='form-control' value="<?php echo $email; ?>"></td>
                 </tr>
                 <tr>
                     <td>Isadmin</td>
-                    <td><input type='text' name='isadmin' class='form-control' value="<?php echo $isadmin; ?>" required></td>
+                    <td><input type='text' name='isadmin' class='form-control' value="<?php echo $isadmin; ?>"></td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -87,6 +109,7 @@ if(isset($_GET['edit_id'])){
                     </td>
                 </tr>
             </table>
+            <div class="errorTxt"></div>
         </form>
     </div>
         <?php include("ui/footer.htm"); ?>
