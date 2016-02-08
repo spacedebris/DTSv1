@@ -43,16 +43,12 @@ if(isset($_GET['edit_id'])){
             rules: {
                 firstname: {required: true},
                 lastname: {required: true},
-                email: {required: true, email: true},
-                password: {required: true, minlength: 5},
-                repassword: {required: true, minlength: 5, equalTo: '#password'}
+                email: {required: true, email: true}
             },
             messages: {
                 firstname: {required: 'Musisz podać imię'},
                 lastname: {required: 'Musisz podać nazwisko'},
-                email: {required: 'Musisz podać adres', email: 'Musisz podać poprawny adres'},
-                password: {required: 'Musisz podać hasło', minlength: 'Hasło musi zawierać min 5 znaków'},
-                repassword: {required: 'Musisz powtórzyć hasło', minlength: 'Hasło musi zawierać min 5 znaków', equalTo: 'Hasła muszą być identyczne'}
+                email: {required: 'Musisz podać adres', email: 'Musisz podać poprawny adres'}
             },
             errorElement: 'div',
             errorLabelContainer: '.errorTxt'
@@ -93,12 +89,21 @@ if(isset($_GET['edit_id'])){
                     <td><input type='text' name='lastname' class='form-control' value="<?php echo $lastname; ?>"></td>
                 </tr>
                 <tr>
-                    <td>E-mail ID</td>
+                    <td>Email</td>
                     <td><input type='text' name='email' class='form-control' value="<?php echo $email; ?>"></td>
                 </tr>
                 <tr>
-                    <td>Isadmin</td>
-                    <td><input type='text' name='isadmin' class='form-control' value="<?php echo $isadmin; ?>"></td>
+                    <td>Admin</td>
+                    <td>
+                        <div class="btn-group" data-toggle="buttons" id="isadmin_radio">
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="isadmin" id="option1" autocomplete="off" value="1"> Tak
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="isadmin" id="option2" autocomplete="off" value="0" checked> Nie
+                            </label>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">

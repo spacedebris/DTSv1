@@ -32,7 +32,6 @@ if(isset($_POST['btn-addUser'])){
                     </div>";
         }
     } 
-    
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -102,25 +101,34 @@ if(isset($_POST['btn-addUser'])){
                     <td><input type='text' name='lastname' class='form-control'></td>
                 </tr>
                 <tr>
-                    <td>E-mail ID</td>
+                    <td>Email</td>
                     <td><input type='text' name='email' class='form-control'></td>
                 </tr>
                 <tr>
                     <td>Hasło</td>
-                    <td><input type='password' name='password' class='form-control'><td>
+                    <td><input type='password' name='password' id='password' class='form-control'><td>
                 </tr>
                 <tr>
                     <td>Powtórz hasło</td>
                     <td><input type='password' name='repassword' class='form-control'><td>
                 </tr>
                 <tr>
-                    <td>Isadmin</td>
-                    <td><input type='text' name='isadmin' class='form-control' ></td>
+                    <td>Admin</td>
+                    <td>
+                        <div class="btn-group" data-toggle="buttons" id="isadmin_radio">
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="isadmin" id="option1" autocomplete="off" value="1"> Tak
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="isadmin" id="option2" autocomplete="off" value="0" checked> Nie
+                            </label>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <button type="submit" class="btn btn-primary" name="btn-addUser">
-                        <span class="glyphicon glyphicon-edit"></span>  Dodaj
+                            <span class="glyphicon glyphicon-edit"></span>Dodaj
                         </button>
                         <a href="users.php" class="btn btn-success"><i class="glyphicon glyphicon-backward"></i>Innym razem</a>
                     </td>
@@ -128,6 +136,7 @@ if(isset($_POST['btn-addUser'])){
             </table>
             <div class="errorTxt"></div>
         </form>
+        
         </div>
         <?php include("ui/footer.htm"); ?>
     </body>
