@@ -142,7 +142,7 @@ class dbfun
 					$body = "Dzięki za rejestrację w DTS.\n\n Aby aktywować konto, przejdź w poniższy adres:\n\n ".DIR."activate.php?x=$email&y=$verification\n\n Powodzenia ! \n\n";
 					$additionalheaders = "From: <".SITEEMAIL.">\r\n";
 					$additionalheaders .= "Reply-To: ".SITEEMAIL."";
-					mail($to, $subject, $body, $additionalheaders,$headers);
+					mail($to, $subject, $body, $additionalheaders, $headers);
 
                     header('Location: index.php?action=joined');
                     exit;
@@ -331,7 +331,102 @@ class dbfun
             <?php
 		}
 	}
-	//#############################################################################################################
+//GROUPS
+//#############################################################################################################
+	public function groupsview($query){
+		$stmt = $this->db->prepare($query);
+		$stmt->execute();
+	
+		if($stmt->rowCount()>0)
+		{
+			while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+			{
+				?>
+                <tr>
+                <td><?php print($row['id_group']); ?></td>
+                <td><?php print($row['name']); ?></td>
+                <td><?php print($row['tasks_qty']); ?></td>
+                <td><?php print($row['created']); ?></td>
+                <td><?php print($row['createdby']) ?></td>
+                <td align="center">
+                <a href="edit_group.php?edit_id=<?php print($row['id_group']); ?>"><i class="icon-edit"></i></a>
+                </td>
+                <td align="center">
+                <a href="delete_group.php?delete_id=<?php print($row['id_group']); ?>"><i class="icon-trash"></i></a>
+                </td>
+                </tr>
+                <?php
+			}
+		}
+		else
+		{
+			?>
+            <tr>
+            <td>Brak danych</td>
+            </tr>
+            <?php
+		}
+	}
+//#############################################################################################################
+	public function addGroup($name){
+		//temporary
+		$tasks_qty = 0;
+		$created = date("Y-m-d H:i:s");
+		try{
+			$stmt = $this->db->prepare("INSERT INTO groups 
+				(name, tasks_qty, created, createdby) VALUES 
+				(:name, :tasks_qty, :created, :createdby) ");
+			$stmt->bindParam(':name', $name);
+			$stmt->bindParam(':tasks_qty', $tasks_qty);
+			$stmt->bindParam(':created', $created);
+			$stmt->bindParam(':createdby', $_SESSION['key']);
+			$stmt->execute();
+
+			return true;
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+			return false;
+		}
+
+	}
+//#############################################################################################################
+	public function deleteGroup($id_group){
+		$stmt = $this->db->prepare("DELETE FROM groups WHERE id_group=:id_group");
+		$stmt->bindParam(":id_group", $id_group);
+		$stmt->execute();
+		return true;
+	}
+//#############################################################################################################
+	public function updateGroup($id_group, $name){
+		try{
+			$stmt=$this->db->prepare("UPDATE groups SET name=:name
+													WHERE id_group=:id_group");
+			$stmt->bindValue(':name',$name, PDO::PARAM_STR);
+			$stmt->bindValue(':id_group',$id_group);
+			$stmt->execute();
+
+			return true;
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+			return false;
+		}
+	}
+//#############################################################################################################
+	public function getGroupDetailsbyID($id_group){
+		try{
+			$stmt = $this->db->prepare("SELECT * FROM groups WHERE id_group=:id_group");
+			$stmt->execute(array(":id_group"=>$id_group));
+			$result=$stmt->fetch(PDO::FETCH_ASSOC);
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
+	}
+//#############################################################################################################
 	public function paging($query,$records_per_page)
 	{
 		$starting_position=0;
@@ -385,9 +480,6 @@ class dbfun
 				echo "<li><a href='".$self."?page_no=".$total_no_of_pages."'>Ostatni</a></li>";
 			}
 			?>		 
-					<li>
-						<a href="add_user.php">Dodaj użytkownika</a>
-					</li>
 				</ul>
 			<?php
 		}

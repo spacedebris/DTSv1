@@ -35,23 +35,23 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
         <!-- USERS -->
         <div class="container hero-unit">
             <div class="btn-default" align="right">
-                <a href="add_user.php" class="btn btn-info">Dodaj użytkownika</a>
+                <a href="add_group.php" class="btn btn-info">Dodaj grupę</a>
                 <br/><br/>
             </div>
             <table class='table table-bordered table-responsive'>
                 <tr>
                     <th>#</th>
-                    <th>Imię</th>
-                    <th>Nazwisko</th>
-                    <th>Email</th>
-                    <th>Admin</th>
+                    <th>Nazwa</th>
+                    <th>Ilość zadań</th>
+                    <th>Utworzono</th>
+                    <th>Przez</th>
                     <th colspan="2" align="center">Akcja</th> 
                 </tr>
                 <?php
-                    $query = "SELECT * FROM users";       
+                    $query = "SELECT * FROM groups";       
                     $records_per_page=10;
                     $newquery = $dbfun->paging($query,$records_per_page);
-                    $dbfun->usersview($newquery);
+                    $dbfun->groupsview($newquery);
                 ?>
                 <tr>
                     <td colspan="7" align="center">
@@ -61,7 +61,9 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                         ?>
                         </div>
                     </td>
+                    
                 </tr>
+
             </table>
         </div>
         <?php include("ui/footer.htm"); ?>
