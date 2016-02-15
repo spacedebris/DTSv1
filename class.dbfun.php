@@ -438,18 +438,18 @@ class dbfun
 			{
 				?>
                 <tr>
-                <td><?php print($row['id_task']); ?></td>
-                <td><?php print($row['name']); ?></td>
-                <td><?php print($row['content']); ?></td>
-                <td><?php print($row['tag']); ?></td>
-                <td><?php print($row['created']); ?></td>
-                <td><?php print($row['createdby']) ?></td>
-                <td align="center">
-                <a href="edit_task.php?edit_id=<?php print($row['id_task']); ?>"><i class="icon-edit"></i></a>
-                </td>
-                <td align="center">
-                <a href="delete_task.php?delete_id=<?php print($row['id_task']); ?>"><i class="icon-trash"></i></a>
-                </td>
+	                <td><?php print($row['id_task']); ?></td>
+	                <td><?php print($row['title']); ?></td>
+	                <td><?php print($row['content']); ?></td>
+	                <td><?php print($row['tags']); ?></td>
+	                <td><?php print($row['created']); ?></td>
+	                <td><?php print($row['createdby']) ?></td>
+	                <td align="center">
+	                <a href="edit_task.php?edit_id=<?php print($row['id_task']); ?>"><i class="icon-edit"></i></a>
+	                </td>
+	                <td align="center">
+	                <a href="delete_task.php?delete_id=<?php print($row['id_task']); ?>"><i class="icon-trash"></i></a>
+	                </td>
                 </tr>
                 <?php
 			}
@@ -462,6 +462,37 @@ class dbfun
             </tr>
             <?php
 		}
+	}
+//#############################################################################################################
+	public function addTask($title, $content){
+		//temporary
+		$tags = "temporary no tags";
+		$created = date("Y-m-d H:i:s");
+		try{
+			$stmt = $this->db->prepare("INSERT INTO tasks 
+				(title, content, tags, created, createdby) VALUES 
+				(:title, :content, :tags, :created, :createdby)");
+			$stmt->bindParam(':title', $title);
+			$stmt->bindParam(':content', $content);
+			$stmt->bindParam(':tags', $tags);
+			$stmt->bindParam(':created', $created);
+			$stmt->bindParam(':createdby', $_SESSION['key']);
+			$stmt->execute();
+
+			return true;
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+			return false;
+		}
+
+	}
+//#############################################################################################################
+	public function deleteTask($id_task){
+		$stmt = $this->db->prepare("DELETE FROM tasks WHERE id_task=:id_task");
+		$stmt->bindParam(":id_task", $id_task);
+		$stmt->execute();
+		return true;
 	}
 //#############################################################################################################
 	public function paging($query,$records_per_page)

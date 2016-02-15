@@ -2,7 +2,7 @@ Repozytorium zadań z dostępem dla uprawnionych użytkowników z możliwością
 
 Funkcjonalność:
 
-prosty edytor zadań, funkcje: italic, monospace, pre, underline, bold, itp.
+v prosty edytor zadań, funkcje: italic, monospace, pre, underline, bold, itp.
 dodawanie treści zadań do repozytorium
 dodawanie analogicznej treści w innym formacie np. pdf, LaTeX, itp.
 dodawanie rozwiązań do zadań

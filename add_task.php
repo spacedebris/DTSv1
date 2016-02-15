@@ -2,10 +2,11 @@
 require('dbconfig.php');
 if(!$dbfun->is_logged_in()){ header('Location: login.php'); } 
 if(isset($_POST['btn-addTask'])){
-    $name = $_POST['name'];
+    $title = $_POST['title'];
+    $editor_data = $_POST['editorl'];
 
-    $stmt= $db->prepare("SELECT name FROM tasks WHERE name = :name");
-    $stmt->bindParam(':name', $name);
+    $stmt= $db->prepare("SELECT title FROM tasks WHERE title = :title");
+    $stmt->bindParam(':title', $title);
     $stmt->execute();
     if($stmt->rowCount() > 0)
     {
@@ -15,7 +16,7 @@ if(isset($_POST['btn-addTask'])){
     }
     else
     {    
-        if($dbfun->addTask($name))
+        if($dbfun->addTask($title, $editor_data))
         {
             $msg = "<div class='alert alert-info'>
                     Zadanie zostało dodane <strong><a href='tasks.php'>Wróć</a></strong>
@@ -36,7 +37,8 @@ if(isset($_POST['btn-addTask'])){
     <meta charset="utf-8">
     <title>Drawing Tasks System</title>
     <meta name="Marek Kozłowski">
-
+    
+    <script src="assets/ckeditor/ckeditor.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.validate.min.js"></script>
@@ -44,16 +46,19 @@ if(isset($_POST['btn-addTask'])){
     $(document).ready(function(){
         $('#add_tasks-form').validate({
             rules: {
-                name: {required: true}
+                title: {required: true},
+                editorl: {required: true}
             },
             messages: {
-                name: {required: 'Musisz podać imię'},
+                title: {required: 'Musisz podać nazwę zadania'},
+                editorl: {required: 'Zadanie musi mieć treść'}
             },
             errorElement: 'div',
             errorLabelContainer: '.errorTxt'
         });
     });
     </script>
+    
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style type="text/css">
         body { background: url(assets/bglight.png);}
@@ -74,29 +79,33 @@ if(isset($_POST['btn-addTask'])){
         <div class="container hero-unit">
 
         <?php 
-        if(isset($msg))
-        {
-            echo $msg;
-        }
+            if(isset($msg)){
+                echo $msg;
+            }
         ?>
 
         <form id="add_task-form" role="form" method="post"> 
             <table class='table table-bordered'>
                 <tr>
                     <td>Nazwa zadania</td>
-                    <td><input type='text' name='name' class='form-control'></td>
+                    <td><input type='text' name='title' class='form-control'></td>
                 </tr>
                 <tr>
                     <td>Treść</td>
-                    <td><input type='text' name='content' class='form-control'></td>
-                    <div id="txtEditor"></div>
+                    <td>
+                        <textarea name='editorl' id='editorl' rows='10' cols='80' class='form-control'></textarea>
+                        <script>
+                            CKEDITOR.replace('editorl');
+                        </script>
+                    </td>
+
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button type="submit" class="btn btn-primary" name="btn-addGroup">
+                        <button type="submit" class="btn btn-primary" name="btn-addTask">
                             <span class="glyphicon glyphicon-edit"></span>Dodaj
                         </button>
-                        <a href="groups.php" class="btn btn-success"><i class="glyphicon glyphicon-backward"></i>Innym razem</a>
+                        <a href="tasks.php" class="btn btn-success"><i class="glyphicon glyphicon-backward"></i>Innym razem</a>
                     </td>
                 </tr>
             </table>
@@ -106,9 +115,4 @@ if(isset($_POST['btn-addTask'])){
         </div>
         <?php include("ui/footer.htm"); ?>
     </body>
-    <script type="text/javascript">
-        $(document).ready( function() {
-        $("#txtEditor").Editor();                    
-        });
-    </script>
 </html>
