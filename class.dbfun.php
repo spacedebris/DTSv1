@@ -426,6 +426,43 @@ class dbfun
 			echo $e->getMessage();
 		}
 	}
+//TASKS
+//#############################################################################################################
+	public function tasksview($query){
+		$stmt = $this->db->prepare($query);
+		$stmt->execute();
+	
+		if($stmt->rowCount()>0)
+		{
+			while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+			{
+				?>
+                <tr>
+                <td><?php print($row['id_task']); ?></td>
+                <td><?php print($row['name']); ?></td>
+                <td><?php print($row['content']); ?></td>
+                <td><?php print($row['tag']); ?></td>
+                <td><?php print($row['created']); ?></td>
+                <td><?php print($row['createdby']) ?></td>
+                <td align="center">
+                <a href="edit_task.php?edit_id=<?php print($row['id_task']); ?>"><i class="icon-edit"></i></a>
+                </td>
+                <td align="center">
+                <a href="delete_task.php?delete_id=<?php print($row['id_task']); ?>"><i class="icon-trash"></i></a>
+                </td>
+                </tr>
+                <?php
+			}
+		}
+		else
+		{
+			?>
+            <tr>
+            <td>Brak danych</td>
+            </tr>
+            <?php
+		}
+	}
 //#############################################################################################################
 	public function paging($query,$records_per_page)
 	{
