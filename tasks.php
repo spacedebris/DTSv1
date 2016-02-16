@@ -41,7 +41,6 @@ if(!$dbfun->is_logged_in()){ header('Location: login.php'); }
                 <tr>
                     <th>#</th>
                     <th>Nazwa</th>
-                    <th>Treść</th>
                     <th>Tagi</th>
                     <th>Utworzono</th>
                     <th>Przez</th>

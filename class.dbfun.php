@@ -282,7 +282,7 @@ class dbfun
 													   email=:email,
 													   isadmin=:isadmin
 													WHERE id=:id ");
-			$stmt->bindValue(':firstname',$firstname, PDO::PARAM_STR);
+			$stmt->bindValue(':firstname',$firstname);
 			$stmt->bindValue(':lastname',$lastname);
 			$stmt->bindValue(':email',$email);
 			$stmt->bindValue(':isadmin',$isadmin);
@@ -440,7 +440,6 @@ class dbfun
                 <tr>
 	                <td><?php print($row['id_task']); ?></td>
 	                <td><?php print($row['title']); ?></td>
-	                <td><?php print($row['content']); ?></td>
 	                <td><?php print($row['tags']); ?></td>
 	                <td><?php print($row['created']); ?></td>
 	                <td><?php print($row['createdby']) ?></td>
@@ -493,6 +492,39 @@ class dbfun
 		$stmt->bindParam(":id_task", $id_task);
 		$stmt->execute();
 		return true;
+	}
+//#############################################################################################################
+	public function updateTask($id_task, $title, $content, $tags){
+		try{
+			$stmt=$this->db->prepare("UPDATE tasks SET title=:title,
+														content=:content,
+														tags=:tags
+													WHERE id_task=:id_task");
+			$stmt->bindValue(':id_task',$id_task);
+			$stmt->bindValue(':title',$title);
+			$stmt->bindValue(':content',$content);
+			$stmt->bindValue(':tags',$tags);
+			$stmt->execute();
+
+			return true;
+		}
+		catch(PDOException $e){
+			echo $e->getMessage();
+			return false;
+		}
+	}
+//#############################################################################################################
+	public function getTaskDetailsbyID($id_task){
+		try{
+			$stmt = $this->db->prepare("SELECT * FROM tasks WHERE id_task=:id_task");
+			$stmt->execute(array(":id_task"=>$id_task));
+			$result=$stmt->fetch(PDO::FETCH_ASSOC);
+			return $result;
+		}
+		catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
 	}
 //#############################################################################################################
 	public function paging($query,$records_per_page)
