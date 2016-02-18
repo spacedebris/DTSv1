@@ -37,14 +37,15 @@ if(isset($_POST['btn-addTask'])){
     <meta charset="utf-8">
     <title>Drawing Tasks System</title>
     <meta name="Marek Kozłowski">
-    
+    <script src="js/bootstrap-tagsinput.js"></script>
     <script src="assets/ckeditor/ckeditor.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="assets/bootstrap-2.3.2/css/bootstrap.min.css">
     <script>
     $(document).ready(function(){
-        $('#add_tasks-form').validate({
+        $('#add_task-form').validate({
             rules: {
                 title: {required: true},
                 editorl: {required: true}
@@ -58,7 +59,7 @@ if(isset($_POST['btn-addTask'])){
         });
     });
     </script>
-    
+    <link href="css/bootstrap-tagsinput.css" rel="stylesheet" media="screen">
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style type="text/css">
         body { background: url(assets/bglight.png);}
@@ -98,6 +99,10 @@ if(isset($_POST['btn-addTask'])){
                             CKEDITOR.replace('editorl');
                         </script>
                     </td>
+                <tr>
+                    <td>Etykiety</td>
+                    <td><input type="text" data-role="tagsinput" value="Amsterdam,Washington,Sydney,Beijing,Cairo"></input></td>
+                </tr>
 
                 </tr>
                 <tr>

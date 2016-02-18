@@ -47,7 +47,7 @@ if(isset($_GET['edit_id'])){
                 editor_data: {required: true}
             },
             messages: {
-                tasks: {required: 'Musisz podać nazwę zadania'},
+                title: {required: 'Musisz podać nazwę zadania'},
                 editor_data: {required: 'Zadanie musi mieć treść'}
             },
             errorElement: 'div',
@@ -94,6 +94,10 @@ if(isset($_GET['edit_id'])){
                             CKEDITOR.instances['editorl'].setData($content);
                         </script>
                     </td>
+                </tr>
+                <tr>
+                    <td>Etykiety</td>
+                    <td><input type="text" data-role="tagsinput" ></input></td>
                 </tr>
                 <tr>
                     <td colspan="2">

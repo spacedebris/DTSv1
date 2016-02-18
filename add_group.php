@@ -42,12 +42,12 @@ if(isset($_POST['btn-addGroup'])){
     <script src="js/jquery.validate.min.js"></script>
     <script>
     $(document).ready(function(){
-        $('#add_user-form').validate({
+        $('#add_group-form').validate({
             rules: {
                 name: {required: true}
             },
             messages: {
-                name: {required: 'Musisz podać imię'},
+                name: {required: 'Musisz podać nazwę grupy'},
             },
             errorElement: 'div',
             errorLabelContainer: '.errorTxt'
