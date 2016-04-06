@@ -6,7 +6,7 @@ date_default_timezone_set('Europe/Warsaw');
 
 define('DBHOST','localhost');
 define('DBUSER','root');
-define('DBPASS','');
+define('DBPASS','root');
 define('DBNAME','dtsv1');
 
 define('DIR','http://localhost/dtsv1/');
