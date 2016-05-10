@@ -1,24 +1,23 @@
-Repozytorium zadań z dostępem dla uprawnionych użytkowników z możliwością grupowania zadań.
+System do losowania zadań w architekturze klient-serwer z bazą danych
 
 Funkcjonalność:
 
-v prosty edytor zadań, funkcje: italic, monospace, pre, underline, bold, itp.
-dodawanie treści zadań do repozytorium
-dodawanie analogicznej treści w innym formacie np. pdf, LaTeX, itp.
-dodawanie rozwiązań do zadań
-etykietowanie rozwiązań, np.: Tekst, HTML, Java, C, JavaScript, Haskell, Prolog, itp.
-przeglądanie zadań z rozwiązaniami
-informowanie użytkowników systemu o pojawieniu się nowego zadania lub rozwiązania
-każdy użytkownik może tworzyć grupy zadań i dodawać zadania do tych grup
-każdy użytkownik może tworzyć listę zadań do wydrukowania
-
-
+prosty edytor zdań
+zaawansowany edytor zadań
+v tworzenie zbiorów zadań
+wybór zbioru zadań do losowania
+rozpoczęcie i zakończenie sesji
+odtwarzanie sesji
+inne
 Funkcjonalność po stronie serwera:
 
-v wbudowane konto administratora
-v tworzenie kont użytkowników 
-  weryfikacja konta użytkownika np. poprzez domenę adresu email ur.edu.pl
-v po utworzeniu konta możliwość zmiany adresu email
-  zadania, grupy zadań i użytkownicy przechowywani są w bazie danych
+v tworzenie konta nauczyciela
+v tworzenie konta ucznia
+wariant bez konta ucznia
+obsługa sytuacji wyjątkowych np. rezygnacja lub spóźnienie ucznia, większa liczba uczniów niż komputerów, itp.
 v resetowanie zapomnianego hasła
 v haszowanie hasła
+inne
+
+
+radzio.cool@gmail.com
