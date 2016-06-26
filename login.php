@@ -47,6 +47,9 @@ if( $dbfun->is_logged_in() ){ header('Location: home.php'); }
                         case 'verificated':            
                             echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Konto jest już aktywne, możesz się zalogować.</strong><br/></div>";
                             break;
+                        case 'sthgoesbad':
+                            echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Coś poszło nie tak.</strong><br/></div>";
+                            break;
                     }
                 } 
                 if(!isset($_POST['loginUser'])){

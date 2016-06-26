@@ -79,28 +79,22 @@ class dbfun
 	        	echo "<div class='alert alert-success' role='alert' style='text-align:center'><strong>Twoje nowe hasło zostanie wysłane na adres email podany w formularzu.</strong><br/><a href='login.php'><strong>Zaloguj</strong></a></div>";
 	                        
 	        	$to = $email;
-
 	        	$subject = 'Odzyskiwanie hasła DTS';
-
 	        	$headers = "From: kozlowskimarkamil@gmail.com\r\n";
-	        	$headers .= "Reply-To: kozlowskimarkamil@gmail.com\r\n";
-	                        
+	        	$headers .= "Reply-To: kozlowskimarkamil@gmail.com\r\n";  
 	        	$headers .= "Content-Type: text/html; charset=utf-8\r\n";
-
 	        	$message = '<html><body>';
 	        	$message .= '<h1>Twoje hasło to:</h1><br/><br/>';
 	        	$message .= $randomString;
 	        	$message .= '<br/><br/>Powodzenia';
 	        	$message .= '</body></html>';
-
-
 	        	mail($to, $subject, $message, $headers);
 	        } 
 	        else
 	        {
 	            echo "<div class='alert alert-danger' role='alert' style='text-align:center'>
 	            <strong>Twój adres email nie jest zarejestrowany w bazie!</strong><br/>
-	            <a href='register.php'><strong>Zarejestruj się?</strong></a><br/><a href='forgotten_password.php'>
+	            <a href='index.php'><strong>Zarejestruj się?</strong></a><br/><a href='forgotten_password.php'>
 	            <strong>Jeszcze raz?</strong></a></div>";
 	        }		
 		}
@@ -137,12 +131,14 @@ class dbfun
                 if($stmt->execute())
                 { 
             		$to = $email;
-            		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-					$subject = "DTS -> Potwierdzenie rejestracji";
-					$body = "Dzięki za rejestrację w DTS.\n\n Aby aktywować konto, przejdź w poniższy adres:\n\n ".DIR."activate.php?x=$email&y=$verification\n\n Powodzenia ! \n\n";
-					$additionalheaders = "From: <".SITEEMAIL.">\r\n";
-					$additionalheaders .= "Reply-To: ".SITEEMAIL."";
-					mail($to, $subject, $body, $additionalheaders, $headers);
+            		$subject = "DTS -> Potwierdzenie rejestracji";
+            		$headers = "From: <".SITEEMAIL.">\r\n";
+	        		$headers .= "Reply-To: kozlowskimarkamil@gmail.com\r\n";  
+	        		$headers .= "Content-Type: text/html; charset=utf-8\r\n";
+	        		$message = '<html><body>';
+	        		$message .= "Dzięki za rejestrację w DTS.<br><br>Aby aktywować konto, przejdź w poniższy adres:<br><br> ".DIR."activate.php?x=$email&y=$verification\n\n Powodzenia ! \n\n";
+	        		$message .= '</body></html>';
+	        		mail($to, $subject, $message, $headers);
 
                     header('Location: index.php?action=joined');
                     exit;
@@ -213,6 +209,13 @@ class dbfun
 		}
 		else
 			return 0;
+	}
+//#############################################################################################################
+	public function isVerificated($email){
+		$stmt = $this->db->prepare('SELECT verification FROM users WHERE email=?');
+		$stmt->execute(array($email));
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		return $result;
 	}
 //#############################################################################################################
 	public function getUserDetails($email){

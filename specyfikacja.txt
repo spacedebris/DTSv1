@@ -17,7 +17,31 @@ wariant bez konta ucznia
 obsługa sytuacji wyjątkowych np. rezygnacja lub spóźnienie ucznia, większa liczba uczniów niż komputerów, itp.
 v resetowanie zapomnianego hasła
 v haszowanie hasła
+<<<<<<< HEAD
 inne
 
 
 radzio.cool@gmail.com
+=======
+
+System do losowania zadań w architekturze klient-serwer z bazą danych
+
+Funkcjonalność:
+
+prosty edytor zdań
+zaawansowany edytor zadań
+tworzenie zbiorów zadań
+wybór zbioru zadań do losowania
+rozpoczęcie i zakończenie sesji
+odtwarzanie sesji
+inne
+Funkcjonalność po stronie serwera:
+
+tworzenie konta nauczyciela
+tworzenie konta ucznia
+wariant bez konta ucznia
+obsługa sytuacji wyjątkowych np. rezygnacja lub spóźnienie ucznia, większa liczba uczniów niż komputerów, itp.
+resetowanie zapomnianego hasła
+haszowanie hasła
+inne
+>>>>>>> 13c388ada54e4f361859b059f73551339fda7823

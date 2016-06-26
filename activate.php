@@ -16,9 +16,11 @@ if(!empty($verification)){
 
 		header('Location: login.php?action=verificated');
 		exit;
-
+		
+		if($db->isVerificated($email))
+		
 	} else {
-		echo "Twoje konto nie jest aktywne."; 
+		header('Location: login.php?action=sthgoesbad'); 
 	}
 }
 ?>
