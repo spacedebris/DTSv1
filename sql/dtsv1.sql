@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `groups` (
-  `id_group` int(10) NOT NULL AUTO_INCREMENT,
+  `id_group` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `tasks_qty` int(11) NOT NULL,
   `created` datetime NOT NULL,
@@ -100,6 +100,45 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `verifi
 (71, 'asdasd', 'asdasd', 'asdasdas@da', '$2y$10$aVNgzW8D2mNADw7YAmsPyOr9aX8Nl7T/9Nd1u69Z9TCl4I/ytiVqa', '40924efd9f3dc57f9bb0d3eccf783c32', 0),
 (72, 'asd', 'asd', 'alina@aplia.com', '$2y$10$q1YUFJa7bW5HYLL0afvb9O9hPLcmpwqHahC9wmr8NqHA.61rJCkXm', '7ad26c5f1e5867feb483ea7f53916171', 0);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tagmap`
+--
+
+CREATE TABLE IF NOT EXISTS `tagmap` (
+  `id_tagmap` int(11) NOT NULL AUTO_INCREMENT,
+  `id_tag` int(11) NOT NULL,
+  `id_tasks` int(11) NOT NULL,
+  PRIMARY KEY (`id_tagmap`),
+  UNIQUE KEY `id_tagmap` (`id_tagmap`),
+  KEY `id_tagmap_2` (`id_tagmap`),
+  KEY `id_tag` (`id_tag`),
+  KEY `id_tag_2` (`id_tag`),
+  KEY `id_tasks` (`id_tasks`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tags`
+--
+
+CREATE TABLE IF NOT EXISTS `tags` (
+  `id_tag` int(11) NOT NULL AUTO_INCREMENT,
+  `tag_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_tag`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+
+ALTER TABLE `tagmap`
+  ADD CONSTRAINT `tagmap_ibfk_2` FOREIGN KEY (`id_tasks`) REFERENCES `tasks` (`id_task`),
+  ADD CONSTRAINT `tagmap_ibfk_1` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+
