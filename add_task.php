@@ -37,11 +37,16 @@ if(isset($_POST['btn-addTask'])){
     <meta charset="utf-8">
     <title>Drawing Tasks System</title>
     <meta name="Marek Kozłowski">
-    <script src="js/bootstrap-tags.js"></script>
     <script src="assets/ckeditor/ckeditor.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.js"></script>
     <script src="js/jquery.validate.min.js"></script>
+    <script src="assets/tagEditor/jquery.tag-editor.js"></script>
+    <link rel="stylesheet" href="assets/tagEditor/jquery.tag-editor.css">
+
+
+
+    
     <script>
     $(document).ready(function(){
         $('#add_task-form').validate({
@@ -97,21 +102,22 @@ if(isset($_POST['btn-addTask'])){
                             CKEDITOR.replace('editorl');
                         </script>
                     </td>
-                <tr>
-                    <td>Etykiety</td>
-                    <td><input type="text" name="tags" class="tags" id="tags" value="foo,bar,baz" /></td>
-                   <script>
-    $(function() {
-        // If using Bootstrap 2, be sure to include:
-        Tags.bootstrapVersion = "2";
-        $('#tags').tags({
-            tagData:["boilerplate", "tags"],
-            suggestions:["basic", "suggestions"],
-            excludeList:["not", "these", "words"]
-        });
-    });
-</script>
-                </tr>
+                    <tr>
+                        <td>Etykiety</td>
+                        <!--<td><input type="text" name="tags" class="tags" id="tags" value="foo,bar,baz" /></td>-->
+                        <td><textarea id="tags_te"></textarea></td>
+                    </tr>
+                    
+                    
+                    <script>
+                        $(function(){
+                            $('#tags_te').tagEditor({
+                                placeholder: "tagi"
+                            });
+                        });
+
+                    </script>
+
                 </tr>
                 <tr>
                     <td colspan="2">
