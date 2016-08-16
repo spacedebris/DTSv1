@@ -41,12 +41,21 @@ if(isset($_POST['btn-addTask'])){
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery.validate.min.js"></script>
-    <script src="assets/tagEditor/jquery.tag-editor.js"></script>
-    <link rel="stylesheet" href="assets/tagEditor/jquery.tag-editor.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 
-
-
+    <link rel="stylesheet" href="assets/selectize.js/examples/css/normalize.css">
     
+    <!--[if IE 8]><script src="js/es5.js"></script><![endif]-->
+    <script src="assets/selectize.js/examples/js/jquery.min.js"></script>
+    <script src="assets/selectize.js/dist/js/standalone/selectize.js"></script>
+    <script src="assets/selectize.js/examples/js/index.js"></script>
+
+    <style type="text/css">
+        body { background: url(assets/bglight.png);}
+        .hero-unit { background-color: #fff; }
+        .center { display: block; margin: 0 auto; }
+        .navbar-fixed-bottom {background-color: #f5f5f5; }
+    </style>
     <script>
     $(document).ready(function(){
         $('#add_task-form').validate({
@@ -63,14 +72,6 @@ if(isset($_POST['btn-addTask'])){
         });
     });
     </script>
-    <link href="css/bootstrap-tags.css" rel="stylesheet" type="text/css">
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <style type="text/css">
-        body { background: url(assets/bglight.png);}
-        .hero-unit { background-color: #fff; }
-        .center { display: block; margin: 0 auto; }
-        .navbar-fixed-bottom {background-color: #f5f5f5; }
-    </style>
 </head>
     <body>
         <?php
@@ -104,19 +105,19 @@ if(isset($_POST['btn-addTask'])){
                     </td>
                     <tr>
                         <td>Etykiety</td>
-                        <!--<td><input type="text" name="tags" class="tags" id="tags" value="foo,bar,baz" /></td>-->
-                        <td><textarea id="tags_te"></textarea></td>
+                        <td><input type="text" id="input-tags" class="demo-default" value="awesome,neat"></td>
+                        
                     </tr>
-                    
-                    
-                    <script>
-                        $(function(){
-                            $('#tags_te').tagEditor({
-                                placeholder: "tagi"
-                            });
-                        });
-
+                                        <script>
+                    $('#input-tags').selectize({
+                        persist: false,
+                        createOnBlur: true,
+                        create: true
+                    });
                     </script>
+                    
+                    
+                    
 
                 </tr>
                 <tr>
